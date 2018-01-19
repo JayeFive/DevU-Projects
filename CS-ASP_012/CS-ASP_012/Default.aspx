@@ -27,6 +27,10 @@
             <br />
             <br />
             <asp:Label ID="resultLabel" runat="server"></asp:Label>
+            <br />
+            <br />
+            <br />
+            <asp:CheckBox ID="CheckBox1" runat="server" />
         </div>
     </form>
 </body>
