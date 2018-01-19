@@ -14,6 +14,7 @@ public partial class _Default : System.Web.UI.Page
 
     protected void okButton_Click(object sender, EventArgs e)
     {
+        /*
         double num1 = double.Parse(inputText1.Text);
         double num2 = double.Parse(inputText2.Text);
 
@@ -23,6 +24,35 @@ public partial class _Default : System.Web.UI.Page
         else
         {
             resultLabel.Text = "The two are inequal!";
+        }
+        */
+
+        /*
+        if (coolCheckBox.Checked)
+        {
+            resultLabel.Text = "You are super cool!";
+        }
+        else
+        {
+            resultLabel.Text = "Don't be so hard on yourself!";
+        }
+        */
+
+        if (pizzaRadioBtn.Checked)
+        {
+            resultLabel.Text = "You must be from Chicago.";
+        }
+        else if (saladRadioBtn.Checked)
+        {
+            resultLabel.Text = "You must be really healthy.";
+        }
+        else if (pbjRadioBtn.Checked)
+        {
+            resultLabel.Text = "You must be a really creative person.";
+        }
+        else
+        {
+            resultLabel.Text = "Please select one of the options above.";
         }
     }
 }

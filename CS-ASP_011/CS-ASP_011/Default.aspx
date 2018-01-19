@@ -15,7 +15,18 @@
             <asp:TextBox ID="inputText2" runat="server"></asp:TextBox>
 &nbsp;?<br />
             <br />
-            <asp:Button ID="okButton" runat="server" OnClick="okButton_Click" Text="Check" />
+            <br />
+            <br />
+            <asp:RadioButton ID="pizzaRadioBtn" runat="server" GroupName="FoodGroup" Text="Pizza" />
+            <br />
+            <asp:RadioButton ID="saladRadioBtn" runat="server" GroupName="FoodGroup" Text="Salad" />
+            <br />
+            <asp:RadioButton ID="pbjRadioBtn" runat="server" GroupName="FoodGroup" OnCheckedChanged="pbjRadioBtn_CheckedChanged" Text="PB&amp;J" />
+            <br />
+            <br />
+            <asp:Button ID="okButton" runat="server" OnClick="okButton_Click" Text="Ok" />
+            <br />
+            <br />
             <br />
             <asp:Label ID="resultLabel" runat="server"></asp:Label>
         </div>
