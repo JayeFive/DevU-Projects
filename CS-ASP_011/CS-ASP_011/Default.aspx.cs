@@ -38,6 +38,7 @@ public partial class _Default : System.Web.UI.Page
         }
         */
 
+        /*
         if (pizzaRadioBtn.Checked)
         {
             resultLabel.Text = "You must be from Chicago.";
@@ -54,5 +55,6 @@ public partial class _Default : System.Web.UI.Page
         {
             resultLabel.Text = "Please select one of the options above.";
         }
+        */
     }
 }
