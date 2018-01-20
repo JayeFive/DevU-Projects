@@ -9,7 +9,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            Working with date and time:<br />
+            Working with timespans:<br />
             <br />
             <asp:Button ID="OkBtn" runat="server" OnClick="OkBtn_Click" Text="Ok" />
             <br />
