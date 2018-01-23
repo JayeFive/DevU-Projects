@@ -9,20 +9,28 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            Type values to add to the array:<br />
+            From:<br />
             <br />
-            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
-&nbsp;<asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
-&nbsp;<asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
-&nbsp;<asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
-&nbsp;<asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
+            <asp:RadioButton ID="RadioButton1" runat="server" GroupName="FromBtns" Text="Chicago" />
             <br />
+            <asp:RadioButton ID="RadioButton2" runat="server" GroupName="FromBtns" Text="New York" />
             <br />
-            <asp:Button ID="AddBtn" runat="server" OnClick="AddBtn_Click" Text="Add" />
-&nbsp;<asp:Button ID="RetrieveBtn" runat="server" OnClick="RetrieveBtn_Click" Text="Retrieve" />
+            <asp:RadioButton ID="RadioButton3" runat="server" GroupName="FromBtns" Text="London" />
             <br />
             <br />
-            <asp:Label ID="ResultLabel" runat="server"></asp:Label>
+            To:<br />
+            <br />
+            <asp:RadioButton ID="RadioButton4" runat="server" GroupName="ToBtns" Text="Chicago" />
+            <br />
+            <asp:RadioButton ID="RadioButton5" runat="server" GroupName="ToBtns" Text="New York" />
+            <br />
+            <asp:RadioButton ID="RadioButton6" runat="server" GroupName="ToBtns" Text="London" />
+            <br />
+            <br />
+            <asp:Button ID="OkBtn" runat="server" OnClick="OkBtn_Click" Text="Ok" />
+            <br />
+            <br />
+            Ticket Price: <asp:Label ID="ResultLabel" runat="server"></asp:Label>
         </div>
     </form>
 </body>
