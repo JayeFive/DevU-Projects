@@ -9,17 +9,17 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            Type a value to add it to the string:<br />
+            Type values to add to the array:<br />
             <br />
-            Server control:<br />
-            <asp:TextBox ID="ServerBox" runat="server"></asp:TextBox>
+            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+&nbsp;<asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+&nbsp;<asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
+&nbsp;<asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
+&nbsp;<asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
             <br />
             <br />
-            Plain &#39;ol HTLM input=text box:<br />
-            <input id="htmlBox" type="text" /><br />
-            <br />
-            <br />
-            <asp:Button ID="okBtn" runat="server" OnClick="okBtn_Click" Text="Add" />
+            <asp:Button ID="AddBtn" runat="server" OnClick="AddBtn_Click" Text="Add" />
+&nbsp;<asp:Button ID="RetrieveBtn" runat="server" OnClick="RetrieveBtn_Click" Text="Retrieve" />
             <br />
             <br />
             <asp:Label ID="ResultLabel" runat="server"></asp:Label>
