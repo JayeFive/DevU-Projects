@@ -9,11 +9,27 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            How many days have elapsed?<br />
+            Loan Application Form:<br />
             <br />
-            <asp:Calendar ID="firstCalendar" runat="server"></asp:Calendar>
+            Name:
+            <asp:TextBox ID="NameBox" runat="server"></asp:TextBox>
             <br />
-            <asp:Calendar ID="secondCalendar" runat="server"></asp:Calendar>
+            <br />
+            Phone Number:
+            <asp:TextBox ID="PhoneBox" runat="server"></asp:TextBox>
+            <br />
+            <br />
+            SSN:
+            <asp:TextBox ID="SocialBox" runat="server"></asp:TextBox>
+            <br />
+            <br />
+            Loan Origination Date:<br />
+            <asp:Calendar ID="LoanCalendar" runat="server"></asp:Calendar>
+            <br />
+            Salary:
+            <asp:TextBox ID="SalaryBox" runat="server"></asp:TextBox>
+            <br />
+            <br />
             <br />
             <asp:Button ID="okBtn" runat="server" OnClick="okBtn_Click" Text="Ok" />
             <br />
