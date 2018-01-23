@@ -9,29 +9,17 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            Loan Application Form:<br />
+            Type a value to add it to the string:<br />
             <br />
-            Name:
-            <asp:TextBox ID="NameBox" runat="server"></asp:TextBox>
-            <br />
-            <br />
-            Phone Number:
-            <asp:TextBox ID="PhoneBox" runat="server"></asp:TextBox>
+            Server control:<br />
+            <asp:TextBox ID="ServerBox" runat="server"></asp:TextBox>
             <br />
             <br />
-            SSN:
-            <asp:TextBox ID="SocialBox" runat="server"></asp:TextBox>
+            Plain &#39;ol HTLM input=text box:<br />
+            <input id="htmlBox" type="text" /><br />
             <br />
             <br />
-            Loan Origination Date:<br />
-            <asp:Calendar ID="LoanCalendar" runat="server"></asp:Calendar>
-            <br />
-            Salary:
-            <asp:TextBox ID="SalaryBox" runat="server"></asp:TextBox>
-            <br />
-            <br />
-            <br />
-            <asp:Button ID="okBtn" runat="server" OnClick="okBtn_Click" Text="Ok" />
+            <asp:Button ID="okBtn" runat="server" OnClick="okBtn_Click" Text="Add" />
             <br />
             <br />
             <asp:Label ID="ResultLabel" runat="server"></asp:Label>
