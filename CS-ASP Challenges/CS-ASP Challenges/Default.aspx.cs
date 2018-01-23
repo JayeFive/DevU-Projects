@@ -12,28 +12,23 @@ public partial class _Default : System.Web.UI.Page
 
     }
 
-    protected void GetDateBtn_Click(object sender, EventArgs e)
-    {
-        ResultLabel.Text = MyCalendar.SelectedDate.ToShortDateString();
-    }
 
-    protected void SetDateBtn_Click(object sender, EventArgs e)
-    {
-        MyCalendar.SelectedDate = DateTime.Parse("4/3/2017");
-    }
 
-    protected void ShowDateBtn_Click(object sender, EventArgs e)
+    protected void okBtn_Click(object sender, EventArgs e)
     {
-        MyCalendar.VisibleDate = DateTime.Parse("4/3/1984");
-    }
+        var firstDate = firstCalendar.SelectedDate;
+        var secondDate = secondCalendar.SelectedDate;
+        TimeSpan resultSpan;
 
-    protected void WeekBtn_Click(object sender, EventArgs e)
-    {
-        ResultLabel.Text = "Week of " + MyCalendar.SelectedDate.ToShortDateString();
-    }
+        if (firstDate > secondDate)
+        {
+            resultSpan = firstDate - secondDate;
+        }
+        else
+        {
+            resultSpan = secondDate - firstDate;
+        }
 
-    protected void MyCalendar_SelectionChanged(object sender, EventArgs e)
-    {
-        ResultLabel.Text = MyCalendar.SelectedDate.ToLongDateString();
+        ResultLabel.Text = resultSpan.TotalDays.ToString() + " days";
     }
 }
