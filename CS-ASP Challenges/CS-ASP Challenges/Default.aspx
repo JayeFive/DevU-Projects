@@ -9,12 +9,20 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            Hours worked on a project:<br />
+            <h1>Asset Performance Tracker</h1>
+            Asset Name:
+            <asp:TextBox ID="AssetName" runat="server"></asp:TextBox>
             <br />
-            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+            <br />
+            Number of elections rigged:
+            <asp:TextBox ID="NumElections" runat="server"></asp:TextBox>
             <br />
             <br />
-            <asp:Button ID="AddBtn" runat="server" OnClick="AddBtn_Click" Text="Add Hours" />
+            Number of acts of subterfuge:
+            <asp:TextBox ID="NumSubterfuge" runat="server"></asp:TextBox>
+            <br />
+            <br />
+            <asp:Button ID="AddBtn" runat="server" OnClick="AddBtn_Click" Text="Add Asset" />
             <br />
             <br />
             <asp:Label ID="ResultLabel" runat="server"></asp:Label>
