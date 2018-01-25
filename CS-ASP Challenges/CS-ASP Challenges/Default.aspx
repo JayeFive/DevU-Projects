@@ -9,23 +9,9 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <h1>Asset Performance Tracker</h1>
-            Asset Name:
-            <asp:TextBox ID="AssetName" runat="server"></asp:TextBox>
-            <br />
-            <br />
-            Number of elections rigged:
-            <asp:TextBox ID="NumElections" runat="server"></asp:TextBox>
-            <br />
-            <br />
-            Number of acts of subterfuge:
-            <asp:TextBox ID="NumSubterfuge" runat="server"></asp:TextBox>
-            <br />
-            <br />
-            <asp:Button ID="AddBtn" runat="server" OnClick="AddBtn_Click" Text="Add Asset" />
-            <br />
-            <br />
             <asp:Label ID="ResultLabel" runat="server"></asp:Label>
+            <br />
+            <asp:Label ID="ResultLabel2" runat="server"></asp:Label>
         </div>
     </form>
 </body>
