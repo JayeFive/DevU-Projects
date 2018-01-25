@@ -15,12 +15,16 @@ public partial class _Default : System.Web.UI.Page
         displayBattleHeader();
 
         // Hero gets bonus first attack 
+        monsterHealth = performAttack(monsterHealth, 20, "Hero", "Monster");
+
 
         while (heroHealth > 0 && monsterHealth > 0)
         {
             displayRoundHeader();
 
             // Perform battle here!
+            monsterHealth = performAttack(monsterHealth, 20, "Hero", "Monster");
+            heroHealth = performAttack(heroHealth, 20, "Monster", "Hero");
 
         }
 
@@ -39,12 +43,30 @@ public partial class _Default : System.Web.UI.Page
         resultLabel.Text += "<hr /><p>Round begins ...</p>";
     }
 
+    private int performAttack(int defenderHealth, int attackerDamageMax, string attackerName, string defenderName)
+    {
+        Random random = new Random();
+        int damage = random.Next(1, attackerDamageMax);
+
+        defenderHealth -= damage;
+
+        describeRound(attackerName, defenderName, defenderHealth);
+
+        return defenderHealth;
+    }
+
     private void describeRound(string attackerName, string defenderName, int defenderHealth)
     {
         if (defenderHealth <= 0)
-            resultLabel.Text += String.Format("<br />{0} attacks {1} and vanquishes the {2}.", attackerName, defenderName, defenderName);
+        {
+            resultLabel.Text += String.Format("<br />{0} attacks {1} and vanquishes the {2}.", 
+                attackerName, defenderName, defenderName);
+        }
         else
-            resultLabel.Text += String.Format("<br />{0} attacks {1}, leaving {2} with {3} health.", attackerName, defenderName, defenderName, defenderHealth);
+        {
+            resultLabel.Text += String.Format("<br />{0} attacks {1}, leaving {2} with {3} health.", 
+                attackerName, defenderName, defenderName, defenderHealth);
+        }
     }
 
     private void displayResult(int heroHealth, int monsterHealth)
