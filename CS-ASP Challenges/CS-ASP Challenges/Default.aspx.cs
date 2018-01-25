@@ -43,9 +43,9 @@ public partial class _Default : System.Web.UI.Page
         resultLabel.Text += "<hr /><p>Round begins ...</p>";
     }
 
+    Random random = new Random();
     private int performAttack(int defenderHealth, int attackerDamageMax, string attackerName, string defenderName)
     {
-        Random random = new Random();
         int damage = random.Next(1, attackerDamageMax);
 
         defenderHealth -= damage;
