@@ -9,6 +9,8 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            Postal Calculator<br />
+            <br />
             <asp:Label ID="resultLabel" runat="server"></asp:Label>
             <br />
         </div>
