@@ -9,20 +9,6 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            Convert to cups<br />
-            <br />
-            <asp:TextBox ID="quantityTextBox" runat="server" AutoPostBack="True" OnTextChanged="quantityTextBox_TextChanged"></asp:TextBox>
-            <br />
-            <br />
-            <asp:RadioButton ID="fromCupsRadio" runat="server" AutoPostBack="True" GroupName="FromGroup" OnCheckedChanged="cupsRadio_CheckedChanged" Text="Cups" />
-            <br />
-            <asp:RadioButton ID="fromPintsRadio" runat="server" AutoPostBack="True" GroupName="FromGroup" OnCheckedChanged="fromPintsRadio_CheckedChanged" Text="Pints" />
-            <br />
-            <asp:RadioButton ID="fromQuartsRadio" runat="server" AutoPostBack="True" GroupName="FromGroup" OnCheckedChanged="fromQuartsRadio_CheckedChanged" Text="Quarts" />
-            <br />
-            <asp:RadioButton ID="fromGallonsRadio" runat="server" AutoPostBack="True" GroupName="FromGroup" OnCheckedChanged="fromGallonsRadio_CheckedChanged" Text="Gallons" />
-            <br />
-            <br />
             <asp:Label ID="resultLabel" runat="server"></asp:Label>
             <br />
         </div>

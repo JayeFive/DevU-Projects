@@ -9,44 +9,51 @@ public partial class _Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        int heroHealth = 100;
+        int monsterHealth = 100;
+
+        displayBattleHeader();
+
+        // Hero gets bonus first attack 
+
+        while (heroHealth > 0 && monsterHealth > 0)
+        {
+            displayRoundHeader();
+
+            // Perform battle here!
+
+        }
+
+        displayResult(heroHealth, monsterHealth);
 
     }
-    protected void cupsRadio_CheckedChanged(object sender, EventArgs e)
+
+
+    private void displayBattleHeader()
     {
-        CalculateCups(1.0, "Cups");
+        resultLabel.Text += "<h3>Battle Between the Hero (you) and the Monster (bad guy)</h3>";
     }
 
-    protected void fromPintsRadio_CheckedChanged(object sender, EventArgs e)
+    private void displayRoundHeader()
     {
-        CalculateCups(2.0, "Pints");
+        resultLabel.Text += "<hr /><p>Round begins ...</p>";
     }
 
-    protected void fromQuartsRadio_CheckedChanged(object sender, EventArgs e)
+    private void describeRound(string attackerName, string defenderName, int defenderHealth)
     {
-        CalculateCups(4.0, "Quarts");
+        if (defenderHealth <= 0)
+            resultLabel.Text += String.Format("<br />{0} attacks {1} and vanquishes the {2}.", attackerName, defenderName, defenderName);
+        else
+            resultLabel.Text += String.Format("<br />{0} attacks {1}, leaving {2} with {3} health.", attackerName, defenderName, defenderName, defenderHealth);
     }
 
-    protected void fromGallonsRadio_CheckedChanged(object sender, EventArgs e)
+    private void displayResult(int heroHealth, int monsterHealth)
     {
-        CalculateCups(16.0, "Gallons");
-    }
-
-    protected void quantityTextBox_TextChanged(object sender, EventArgs e)
-    {
-        // ?  Right now, this doens't work!
-    }
-
-    private void CalculateCups(double measureToCupRatio, string measureName)
-    {
-        if (quantityTextBox.Text.Trim().Length == 0)
-            return;
-
-        if (!Double.TryParse(quantityTextBox.Text, out double quantity))
-            return;
-
-        resultLabel.Text = String.Format("{0} {1} is equal to {2} cups.",
-            quantity,
-            measureName,
-            quantity * measureToCupRatio);
+        if (heroHealth <= 0)
+            resultLabel.Text += "<h3>Monster wins!</h3>";
+        else if (monsterHealth <= 0)
+            resultLabel.Text += "<h3>Hero wins!</h3>";
+        else
+            resultLabel.Text += "<h3>They are both losers!</h3>";
     }
 }
