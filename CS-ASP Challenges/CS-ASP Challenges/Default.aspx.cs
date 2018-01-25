@@ -9,42 +9,65 @@ public partial class _Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        Random random = new Random();
 
-        // Wolverine fewest battles
-        // Pheonix most battles
+        int heroHealth = 30;
+        int monsterHealth = 30;
 
-        string[] names = new string[] { "Professor X", "Iceman", "Angel", "Beast", "Pheonix", "Cyclops", "Wolverine", "Nightcrawler", "Storm", "Colossus" };
-        int[] numbers = new int[] { 7, 9, 12, 15, 17, 13, 2, 6, 8, 13 };
+        string result = "";
 
-        var topXman = "";
-        var bottomXman = "";
-        var top = 0;
-        var bottom = 9999;
-        
+        // Hero gets bonus attack first
+        monsterHealth -= random.Next(1, 40);
 
-        for (var i = 0; i < names.Length; i++)
+        int round = 0;
+        result += "<br /> Round: " + round;
+        result += String.Format("<br />Hero attacks first, leaving monster with {0} health",
+            monsterHealth);
+
+        // Battle logic here
+
+        /*
+        while (heroHealth > 0 && monsterHealth > 0)
         {
-            if (numbers[i] > top)
-            {
-                topXman = names[i];
-                top = numbers[i];
-            }
+            int heroDamage = random.Next(1, 10);
+            int monsterDamage = random.Next(1, 20);
 
-            if (numbers[i] < bottom)
-            {
-                bottomXman = names[i];
-                bottom = numbers[i];
-            }
+            monsterHealth -= heroDamage;
+            heroHealth -= monsterDamage;
+
+            result += "<br />Round: " + ++round;
+            result += String.Format("<br />Hero causes {0} damage, leaving monster with {1} health.",
+                heroDamage, monsterHealth);
+            result += String.Format("<br />Monster causes {0} damage, leaving hero with {1} health.",
+                monsterDamage, heroHealth);
+        }
+        */
+
+        do
+        {
+            int heroDamage = random.Next(1, 10);
+            int monsterDamage = random.Next(1, 20);
+
+            monsterHealth -= heroDamage;
+            heroHealth -= monsterDamage;
+
+            result += "<br />Round: " + ++round;
+            result += String.Format("<br />Hero causes {0} damage, leaving monster with {1} health.",
+                heroDamage, monsterHealth);
+            result += String.Format("<br />Monster causes {0} damage, leaving hero with {1} health.",
+                monsterDamage, heroHealth);
+        } while (heroHealth > 0 && monsterHealth > 0);
+
+
+        if (heroHealth > 0)
+        {
+            result += "<br />Hero Wins!";
+        }
+        else
+        {
+            result += "<br />Monster Wins!";
         }
 
-
-        // Your Code Here!
-
-
-        ResultLabel.Text = "Most battles belong to: " + topXman + "(Value: " + top + ")";
-        ResultLabel2.Text = "Least battles belong to: " + bottomXman + "(Value: " + bottom + ")";
-
-
-
+        ResultLabel.Text = result;
     }
 }
