@@ -9,8 +9,29 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:Label ID="resultLabel" runat="server"></asp:Label>
+            <asp:Image ID="Image1" runat="server" Height="150px" Width="150px" />
+            <asp:Image ID="Image2" runat="server" Height="150px" Width="150px" />
+            <asp:Image ID="Image3" runat="server" Height="150px" Width="150px" />
             <br />
+            <br />
+            Your Bet:
+            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+            <br />
+            <br />
+            <asp:Button ID="LeverBtn" runat="server" Text="Pull The Lever!" />
+            <br />
+            <br />
+            <asp:Label ID="BettingLabel" runat="server"></asp:Label>
+            <br />
+            <br />
+            <asp:Label ID="MoneyLabel" runat="server"></asp:Label>
+            <br />
+            <br />
+            1 Cherry - 2x Your Bet!<br />
+            2 Cherries - 3x Your Bet!<br />
+            3 Cherries - 4x YourBet!<br />
+            3 7&#39;s - Jackpot!! 100x Your Bet!<br />
+            HOWEVER - If there&#39;s even one bar you lose<br />
         </div>
     </form>
 </body>
