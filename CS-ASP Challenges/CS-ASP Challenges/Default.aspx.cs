@@ -11,4 +11,19 @@ public partial class _Default : System.Web.UI.Page
     {
         
     }
+
+    protected void ShipGroundBtn_CheckedChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void ShipAirBtn_CheckedChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void ShipNextDayBtn_CheckedChanged(object sender, EventArgs e)
+    {
+
+    }
 }
