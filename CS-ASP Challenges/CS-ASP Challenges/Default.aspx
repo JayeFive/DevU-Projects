@@ -9,13 +9,12 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:Image ID="Image1" runat="server" Height="150px" Width="150px" />
-            <asp:Image ID="Image2" runat="server" Height="150px" Width="150px" />
-            <asp:Image ID="Image3" runat="server" Height="150px" Width="150px" />
+            <asp:Image ID="ImageReel1" runat="server" Height="150px" Width="150px" />
+            <asp:Image ID="ImageReel2" runat="server" Height="150px" Width="150px" />
+            <asp:Image ID="ImageReel3" runat="server" Height="150px" Width="150px" />
             <br />
             <br />
-            Your Bet:
-            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+            Your Bet: <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
             <br />
             <br />
             <asp:Button ID="LeverBtn" runat="server" Text="Pull The Lever!" />
