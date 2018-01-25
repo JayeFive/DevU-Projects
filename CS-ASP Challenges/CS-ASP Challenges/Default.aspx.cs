@@ -13,22 +13,22 @@ public partial class _Default : System.Web.UI.Page
     }
     protected void cupsRadio_CheckedChanged(object sender, EventArgs e)
     {
-        CalculateCups(1.0);
+        CalculateCups(1.0, "Cups");
     }
 
     protected void fromPintsRadio_CheckedChanged(object sender, EventArgs e)
     {
-        CalculateCups(2.0);
+        CalculateCups(2.0, "Pints");
     }
 
     protected void fromQuartsRadio_CheckedChanged(object sender, EventArgs e)
     {
-        CalculateCups(4.0);
+        CalculateCups(4.0, "Quarts");
     }
 
     protected void fromGallonsRadio_CheckedChanged(object sender, EventArgs e)
     {
-        CalculateCups(16.0);
+        CalculateCups(16.0, "Gallons");
     }
 
     protected void quantityTextBox_TextChanged(object sender, EventArgs e)
@@ -36,7 +36,7 @@ public partial class _Default : System.Web.UI.Page
         // ?  Right now, this doens't work!
     }
 
-    private void CalculateCups(double measureToCupRatio)
+    private void CalculateCups(double measureToCupRatio, string measureName)
     {
         if (quantityTextBox.Text.Trim().Length == 0)
             return;
@@ -44,6 +44,9 @@ public partial class _Default : System.Web.UI.Page
         if (!Double.TryParse(quantityTextBox.Text, out double quantity))
             return;
 
-        resultLabel.Text = "The number of cups: " + (quantity * measureToCupRatio).ToString();
+        resultLabel.Text = String.Format("{0} {1} is equal to {2} cups.",
+            quantity,
+            measureName,
+            quantity * measureToCupRatio);
     }
 }
