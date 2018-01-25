@@ -9,65 +9,61 @@ public partial class _Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        Random random = new Random();
 
-        int heroHealth = 30;
-        int monsterHealth = 30;
+    }
+    protected void cupsRadio_CheckedChanged(object sender, EventArgs e)
+    {
+        if (quantityTextBox.Text.Trim().Length == 0)
+            return;
 
-        string result = "";
+        double quantity = 0.0;
+        if (!Double.TryParse(quantityTextBox.Text, out quantity))
+            return;
 
-        // Hero gets bonus attack first
-        monsterHealth -= random.Next(1, 40);
+        resultLabel.Text = "The number of cups: " + quantity.ToString();
+    }
 
-        int round = 0;
-        result += "<br /> Round: " + round;
-        result += String.Format("<br />Hero attacks first, leaving monster with {0} health",
-            monsterHealth);
+    protected void fromPintsRadio_CheckedChanged(object sender, EventArgs e)
+    {
+        if (quantityTextBox.Text.Trim().Length == 0)
+            return;
 
-        // Battle logic here
+        double quantity = 0.0;
+        if (!Double.TryParse(quantityTextBox.Text, out quantity))
+            return;
 
-        /*
-        while (heroHealth > 0 && monsterHealth > 0)
-        {
-            int heroDamage = random.Next(1, 10);
-            int monsterDamage = random.Next(1, 20);
+        double cups = quantity * 2.0;
+        resultLabel.Text = "The number of cups: " + cups.ToString();
+    }
 
-            monsterHealth -= heroDamage;
-            heroHealth -= monsterDamage;
+    protected void fromQuartsRadio_CheckedChanged(object sender, EventArgs e)
+    {
+        if (quantityTextBox.Text.Trim().Length == 0)
+            return;
 
-            result += "<br />Round: " + ++round;
-            result += String.Format("<br />Hero causes {0} damage, leaving monster with {1} health.",
-                heroDamage, monsterHealth);
-            result += String.Format("<br />Monster causes {0} damage, leaving hero with {1} health.",
-                monsterDamage, heroHealth);
-        }
-        */
+        double quantity = 0.0;
+        if (!Double.TryParse(quantityTextBox.Text, out quantity))
+            return;
 
-        do
-        {
-            int heroDamage = random.Next(1, 10);
-            int monsterDamage = random.Next(1, 20);
+        double cups = quantity * 4.0;
+        resultLabel.Text = "The number of cups: " + cups.ToString();
+    }
 
-            monsterHealth -= heroDamage;
-            heroHealth -= monsterDamage;
+    protected void fromGallonsRadio_CheckedChanged(object sender, EventArgs e)
+    {
+        if (quantityTextBox.Text.Trim().Length == 0)
+            return;
 
-            result += "<br />Round: " + ++round;
-            result += String.Format("<br />Hero causes {0} damage, leaving monster with {1} health.",
-                heroDamage, monsterHealth);
-            result += String.Format("<br />Monster causes {0} damage, leaving hero with {1} health.",
-                monsterDamage, heroHealth);
-        } while (heroHealth > 0 && monsterHealth > 0);
+        double quantity = 0.0;
+        if (!Double.TryParse(quantityTextBox.Text, out quantity))
+            return;
 
+        double cups = quantity * 16.0;
+        resultLabel.Text = "The number of cups: " + cups.ToString();
+    }
 
-        if (heroHealth > 0)
-        {
-            result += "<br />Hero Wins!";
-        }
-        else
-        {
-            result += "<br />Monster Wins!";
-        }
-
-        ResultLabel.Text = result;
+    protected void quantityTextBox_TextChanged(object sender, EventArgs e)
+    {
+        // ?  Right now, this doens't work!
     }
 }
