@@ -64,4 +64,9 @@ public partial class _Default : System.Web.UI.Page
     {
 
     }
+
+    protected void LeverBtn_Click(object sender, EventArgs e)
+    {
+        PullTheLever();
+    }
 }
