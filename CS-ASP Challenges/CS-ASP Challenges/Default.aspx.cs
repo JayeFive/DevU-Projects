@@ -16,9 +16,12 @@ public partial class _Default : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!Page.IsPostBack) ViewState.Add("playerMoney", 100);
+        if (!Page.IsPostBack)
+        {
+            ViewState.Add("playerMoney", 100);
+            GenerateRandomImages();     // Start game as though the last player's outcome is still there
+        }
         playerMoney = (int)ViewState["playerMoney"];
-        GenerateRandomImages();     // Start game as though the last player's outcome is still there
         MoneyLabel.Text = String.Format("Player's Money: {0:C}", playerMoney);
     }
 
