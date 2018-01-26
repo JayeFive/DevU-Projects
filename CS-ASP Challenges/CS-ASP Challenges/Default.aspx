@@ -15,13 +15,13 @@
             <br />
             <br />
             Your Bet:
-            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+            <asp:TextBox ID="BetTextBox" runat="server"></asp:TextBox>
             <br />
             <br />
             <asp:Button ID="LeverBtn" runat="server" OnClick="LeverBtn_Click" Text="Pull The Lever!" />
             <br />
             <br />
-            <asp:Label ID="BettingLabel" runat="server"></asp:Label>
+            <asp:Label ID="GameOutcomeLabel" runat="server"></asp:Label>
             <br />
             <br />
             <asp:Label ID="MoneyLabel" runat="server"></asp:Label>
