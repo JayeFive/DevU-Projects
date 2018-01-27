@@ -9,9 +9,6 @@ public partial class _Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        int damage;
-        int healthRemaining;
-
         Character hero = new Character
         {
             Name = "Johnny",
@@ -28,9 +25,15 @@ public partial class _Default : System.Web.UI.Page
             AttackBonus = 6
         };
 
-        monster.Defend(hero.Attack(out damage), out healthRemaining);
+        Dice dice = new Dice();
+
+        // Main battle sequence
+        dice.numSides = hero.DamageMax;
+        monster.Defend(hero.Attack(dice , out int damage), out int healthRemaining);
         LabelDisplayGenerator(hero.Name, monster.Name, damage, healthRemaining);
-        hero.Defend(monster.Attack(out damage), out healthRemaining);
+
+        dice.numSides = monster.DamageMax;
+        hero.Defend(monster.Attack(dice, out damage), out healthRemaining);
         LabelDisplayGenerator(monster.Name, hero.Name, damage, healthRemaining);
     }
 
@@ -51,9 +54,9 @@ class Character
     public int DamageMax { get; set; }
     public int AttackBonus { get; set; }
 
-    public int Attack(out int damage)
+    public int Attack(Dice dice, out int damage)
     {
-        damage = random.Next(0, DamageMax);
+        damage = dice.roll();
         return damage;
     }
 
@@ -61,5 +64,17 @@ class Character
     {
         healthRemaining = Health - damage;
         Health = healthRemaining;
+    }
+}
+
+class Dice
+{
+    Random random = new Random();
+
+    public int numSides { get; set; }
+
+    public int roll()
+    {
+        return random.Next(1, this.numSides);
     }
 }
