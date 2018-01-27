@@ -27,14 +27,24 @@ public partial class _Default : System.Web.UI.Page
 
         Dice dice = new Dice();
 
-        // Main battle sequence
-        dice.numSides = hero.DamageMax;
-        monster.Defend(hero.Attack(dice , out int damage), out int healthRemaining);
-        LabelDisplayGenerator(hero.Name, monster.Name, damage, healthRemaining);
+        //dice.numSides = hero.DamageMax;
+        //monster.Defend(hero.Attack(dice, out int damage), out int healthRemaining);
+        //LabelDisplayGenerator(hero.Name, monster.Name, damage, healthRemaining);
 
-        dice.numSides = monster.DamageMax;
-        hero.Defend(monster.Attack(dice, out damage), out healthRemaining);
-        LabelDisplayGenerator(monster.Name, hero.Name, damage, healthRemaining);
+        //dice.numSides = monster.DamageMax;
+        //hero.Defend(monster.Attack(dice, out damage), out healthRemaining);
+        //LabelDisplayGenerator(monster.Name, hero.Name, damage, healthRemaining);
+
+        AttackSequence(hero, monster, dice);
+    }
+
+    // Battle sequence
+    private void AttackSequence(Character attacker, Character defender, Dice dice)
+    {
+        dice.numSides = attacker.DamageMax;
+        defender.Defend(attacker.Attack(dice, out int damage), out int healthRemaining);
+        LabelDisplayGenerator(attacker.Name, defender.Name, damage, healthRemaining);
+
     }
 
     // Display the attack and health remaining
