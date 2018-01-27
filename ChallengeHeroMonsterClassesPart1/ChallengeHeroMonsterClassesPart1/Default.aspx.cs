@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 public partial class _Default : System.Web.UI.Page
 {
@@ -58,10 +53,10 @@ public partial class _Default : System.Web.UI.Page
         else DisplayVictoryText(attacker, defender);                          // determine the winner. Needs refactoring
     }
 
-    // Display the attack and health remaining
+    // Display the attack result and health remaining of defending character
     private void DisplayAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
     {
-        ResultLabel.Text += String.Format("{0} attacks {1} for {2} damage! {1} has {3} health left. <br />",
+        ResultLabel.Text += String.Format("<p>{0} attacks {1} for {2} damage! {1} has {3} health left.</p>",
             attackerName, defenderName, damage, health);
     }
 
