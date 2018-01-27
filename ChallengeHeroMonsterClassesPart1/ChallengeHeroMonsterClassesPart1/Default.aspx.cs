@@ -28,19 +28,20 @@ public partial class _Default : System.Web.UI.Page
     }
 
     // Single attack sequence
-    private Character AttackSequence(Character attacker, Character defender, Dice dice)
+    private bool AttackSequence(Character attacker, Character defender, Dice dice)
     {
-        dice.numSides = attacker.DamageMax;
-        defender.Defend(attacker.Attack(dice, out int damage), out int healthRemaining);
-        DisplayAttackSequenceStats(attacker.Name, defender.Name, damage, healthRemaining);
-        if (defender.Health <= 0) return defender;      // return the vanquished
-        else return null;                               // or null if no deaths
+        dice.numSides = attacker.DamageMax;     // Set dice size
+        defender.Defend(attacker.Attack(dice, out int damage), out int healthRemaining);    // Fight
+        DisplayAttackSequenceStats(attacker.Name, defender.Name, damage, healthRemaining);  // Display results
+
+        if (defender.Health <= 0) return false;      // return false to stop main sequence
+        else return true;                            // or true to keep the fight going
     }
 
     // Main battle sequence -- runs until either Character is dead
     private void MainBattleSequence(Character attacker, Character defender, Dice dice)
     {
-        while (AttackSequence(attacker, defender, dice) == null && AttackSequence(defender, attacker, dice) == null) ;
+        while (AttackSequence(attacker, defender, dice) && AttackSequence(defender, attacker, dice)) ;
 
         DisplayVictoryText(attacker, defender);     // while loop breaks when defender dies
     }
