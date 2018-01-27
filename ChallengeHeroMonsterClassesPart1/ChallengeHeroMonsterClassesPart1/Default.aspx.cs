@@ -9,7 +9,7 @@ public partial class _Default : System.Web.UI.Page
             Name = "Johnny",
             Health = 100,
             DamageMax = 20,
-            AttackBonus = 3
+            AttackBonus = 15
         };
 
         Character monster = new Character
@@ -17,7 +17,7 @@ public partial class _Default : System.Web.UI.Page
             Name = "Ogre",
             Health = 120,
             DamageMax = 15,
-            AttackBonus = 6
+            AttackBonus = 4
         };
 
         Dice dice = new Dice();
