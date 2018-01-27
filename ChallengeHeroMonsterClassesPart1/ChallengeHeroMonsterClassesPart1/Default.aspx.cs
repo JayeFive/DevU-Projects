@@ -46,13 +46,16 @@ public partial class _Default : System.Web.UI.Page
     private void MainBattleSequence(Character attacker, Character defender, Dice dice)
     {
         bool continueFight = true;
+
         do
         {
             continueFight = AttackSequence(attacker, defender, dice);
+            if (!continueFight) break;
             continueFight = AttackSequence(defender, attacker, dice);
-
         } while (continueFight);
 
+        if (attacker.Health <= 0) DisplayVictoryText(defender, attacker);     // Determine who's still alive to 
+        else DisplayVictoryText(attacker, defender);                          // determine the winner. Needs refactoring
     }
 
     // Display the attack and health remaining
@@ -60,6 +63,11 @@ public partial class _Default : System.Web.UI.Page
     {
         ResultLabel.Text += String.Format("{0} attacks {1} for {2} damage! {1} has {3} health left. <br />",
             attackerName, defenderName, damage, health);
+    }
+
+    private void DisplayVictoryText(Character winner, Character loser)
+    {
+        ResultLabel.Text += String.Format("{0} has slain {1}!", winner.Name, loser.Name);
     }
 }
 
