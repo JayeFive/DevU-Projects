@@ -27,28 +27,28 @@ public partial class _Default : System.Web.UI.Page
 
         Dice dice = new Dice();
 
-        //dice.numSides = hero.DamageMax;
-        //monster.Defend(hero.Attack(dice, out int damage), out int healthRemaining);
-        //LabelDisplayGenerator(hero.Name, monster.Name, damage, healthRemaining);
-
-        //dice.numSides = monster.DamageMax;
-        //hero.Defend(monster.Attack(dice, out damage), out healthRemaining);
-        //LabelDisplayGenerator(monster.Name, hero.Name, damage, healthRemaining);
-
-        AttackSequence(hero, monster, dice);
+        // This is the main battle sequence call that sends the control through the program
+        MainBattleSequence(hero, monster, dice);
     }
 
-    // Battle sequence
+    // Single attack sequence
     private void AttackSequence(Character attacker, Character defender, Dice dice)
     {
         dice.numSides = attacker.DamageMax;
         defender.Defend(attacker.Attack(dice, out int damage), out int healthRemaining);
-        LabelDisplayGenerator(attacker.Name, defender.Name, damage, healthRemaining);
-
+        DisplayAttackSequenceStats(attacker.Name, defender.Name, damage, healthRemaining);
     }
 
+    // Main battle sequence -- runs until either Character is dead
+    //private void MainBattleSequence(Character attacker, Character defender, Dice dice)
+    //{
+    //    if()
+    //    AttackSequence(attacker, defender, dice);
+
+    //}
+
     // Display the attack and health remaining
-    private void LabelDisplayGenerator(string attackerName, string defenderName, int damage, int health)
+    private void DisplayAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
     {
         ResultLabel.Text += String.Format("{0} attacks {1} for {2} damage! {1} has {3} health left. <br />",
             attackerName, defenderName, damage, health);
