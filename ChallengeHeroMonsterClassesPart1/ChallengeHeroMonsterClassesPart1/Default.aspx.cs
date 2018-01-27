@@ -28,29 +28,21 @@ public partial class _Default : System.Web.UI.Page
     }
 
     // Single attack sequence
-    private bool AttackSequence(Character attacker, Character defender, Dice dice)
+    private Character AttackSequence(Character attacker, Character defender, Dice dice)
     {
         dice.numSides = attacker.DamageMax;
         defender.Defend(attacker.Attack(dice, out int damage), out int healthRemaining);
         DisplayAttackSequenceStats(attacker.Name, defender.Name, damage, healthRemaining);
-        if (defender.Health <= 0) return false;
-        else return true;
+        if (defender.Health <= 0) return defender;      // return the vanquished
+        else return null;                               // or null if no deaths
     }
 
     // Main battle sequence -- runs until either Character is dead
     private void MainBattleSequence(Character attacker, Character defender, Dice dice)
     {
-        bool continueFight = true;
+        while (AttackSequence(attacker, defender, dice) == null && AttackSequence(defender, attacker, dice) == null) ;
 
-        do
-        {
-            continueFight = AttackSequence(attacker, defender, dice);
-            if (!continueFight) break;
-            continueFight = AttackSequence(defender, attacker, dice);
-        } while (continueFight);
-
-        if (attacker.Health <= 0) DisplayVictoryText(defender, attacker);     // Determine who's still alive to 
-        else DisplayVictoryText(attacker, defender);                          // determine the winner. Needs refactoring
+        DisplayVictoryText(attacker, defender);     // while loop breaks when defender dies
     }
 
     // Display the attack result and health remaining of defending character
@@ -68,8 +60,6 @@ public partial class _Default : System.Web.UI.Page
 
 class Character
 {
-    Random random = new Random();
-
     public string Name { get; set; }
     public int Health { get; set; }
     public int DamageMax { get; set; }
