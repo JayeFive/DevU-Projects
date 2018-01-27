@@ -31,11 +31,19 @@ public partial class _Default : System.Web.UI.Page
     private bool AttackSequence(Character attacker, Character defender, Dice dice)
     {
         dice.numSides = attacker.DamageMax;     // Set dice size
+
         defender.Defend(attacker.Attack(dice, out int damage), out int healthRemaining);    // Fight
         DisplayAttackSequenceStats(attacker.Name, defender.Name, damage, healthRemaining);  // Display results
+        if (defender.Health <= 0) return false;                 // return false to stop main sequence
 
-        if (defender.Health <= 0) return false;      // return false to stop main sequence
-        else return true;                            // or true to keep the fight going
+        if (dice.RollForExtraAttack(attacker))
+        {
+            defender.Defend(attacker.Attack(dice, out damage), out healthRemaining);    // Extra attack
+            DisplayAttackSequenceStats(attacker.Name, defender.Name, damage, healthRemaining, true);  // Display results
+            if (defender.Health <= 0) return false;                 // return false to stop main sequence
+        }   
+
+        return true;                            
     }
 
     // Main battle sequence -- runs until either Character is dead
@@ -50,6 +58,13 @@ public partial class _Default : System.Web.UI.Page
     private void DisplayAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
     {
         ResultLabel.Text += String.Format("<p>{0} attacks {1} for {2} damage! {1} has {3} health left.</p>",
+            attackerName, defenderName, damage, health);
+    }
+
+    // Display for an extra attack
+    private void DisplayAttackSequenceStats(string attackerName, string defenderName, int damage, int health, bool extraAttack)
+    {
+        ResultLabel.Text += String.Format("<p>{0} gains an extra attack for {2} damage! {1} has {3} health left.</p>",
             attackerName, defenderName, damage, health);
     }
 
@@ -85,8 +100,16 @@ class Dice
 
     public int numSides { get; set; }
 
+    // Roll the Dice!
     public int roll()
     {
         return random.Next(1, this.numSides);
+    }
+
+    // Secondary roll function to determine extra attacks
+    public bool RollForExtraAttack(Character attacker)
+    {
+        if (random.Next(1, 100) <= attacker.AttackBonus) return true;
+        else return false;
     }
 }
