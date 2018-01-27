@@ -28,24 +28,32 @@ public partial class _Default : System.Web.UI.Page
         Dice dice = new Dice();
 
         // This is the main battle sequence call that sends the control through the program
+        // Hero attacks first, ofcourse!
         MainBattleSequence(hero, monster, dice);
     }
 
     // Single attack sequence
-    private void AttackSequence(Character attacker, Character defender, Dice dice)
+    private bool AttackSequence(Character attacker, Character defender, Dice dice)
     {
         dice.numSides = attacker.DamageMax;
         defender.Defend(attacker.Attack(dice, out int damage), out int healthRemaining);
         DisplayAttackSequenceStats(attacker.Name, defender.Name, damage, healthRemaining);
+        if (defender.Health <= 0) return false;
+        else return true;
     }
 
     // Main battle sequence -- runs until either Character is dead
-    //private void MainBattleSequence(Character attacker, Character defender, Dice dice)
-    //{
-    //    if()
-    //    AttackSequence(attacker, defender, dice);
+    private void MainBattleSequence(Character attacker, Character defender, Dice dice)
+    {
+        bool continueFight = true;
+        do
+        {
+            continueFight = AttackSequence(attacker, defender, dice);
+            continueFight = AttackSequence(defender, attacker, dice);
 
-    //}
+        } while (continueFight);
+
+    }
 
     // Display the attack and health remaining
     private void DisplayAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
