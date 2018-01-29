@@ -1,56 +1,58 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public partial class _Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        Dice dice = new Dice();
-        GameMaster gameMaster = new GameMaster();
 
-        PlayerCharacter hero = new PlayerCharacter
-        {
-            Name = "Johnny",
-            Health = 100,
-            DamageMax = 20,
-            AttackBonus = 15,
-            Initiative = 10
-        };
-
-        NonPlayerCharacter monster = new NonPlayerCharacter
-        {
-            Name = "Ogre",
-            Health = 120,
-            DamageMax = 15,
-            AttackBonus = 4,
-            Initiative = 2
-        };
     }
 
+    Dice dice = new Dice();
+    GameMaster gameMaster = new GameMaster();
+
+    PlayerCharacter hero = new PlayerCharacter
+    {
+        Name = "Johnny",
+        Health = 100,
+        DamageMax = 20,
+        AttackBonus = 15,
+        Initiative = 10
+    };
 
     // ***************************** //
-    // Game logic and generic events //
-    private int RollForInitiative(int initiative, Dice dice)
+    // ******** Roll Events ******** //
+    private int RollForInitiative(Dice dice, int initiative)
     {
         return dice.Roll(1, initiative);
     }
 
-    private int RollForAttack(int damageMax, Dice dice)
+    private int RollForAttack(Dice dice, int damageMax)
     {
         return dice.Roll(1, damageMax);
     }
 
-    private bool RollForExtraAttackChance(int attackBonus, Dice dice)
+    private bool RollForExtraAttackChance(Dice dice, int attackBonus)
     {
         if (dice.Roll(1, 100) <= attackBonus) return true;
         else return false;
     }
 
+    // Generic checks //
     private bool DetermineIncapacitation(int health)
     {
-        if (health <= 0) return true;
+        if (health == 0) return true;
         else return false;
     }
+
     // ***************************** //
+    // ******** Game Events ******** //
+
+
+    private void StartCombat()
+    {
+        gameMaster.DetermineTurnOrder(RollForInitiative(dice, hero.Initiative));
+    }
 
 
 
@@ -87,11 +89,35 @@ public partial class _Default : System.Web.UI.Page
 class GameMaster
 {
     object activeCharacter;
+    const int numOfEnemiesToSpawn = 1; // To be used later for spawning multple enemies
+    int numOfEnemies = 0;
     object[] turnOrder;
 
-    public object[] DetermineTurnOrder()
-    {
+    List<NonPlayerCharacter> enemyList = new List<NonPlayerCharacter>();
 
+    public int createEnemies()
+    {
+        for (var i = 0; i < numOfEnemiesToSpawn; i++)
+        {
+            enemyList.Add(new NonPlayerCharacter
+            {
+                Name = "Ogre" + (i + 1),
+                Health = 120,
+                DamageMax = 15,
+                AttackBonus = 4,
+                Initiative = 2
+            });
+
+            numOfEnemies++;
+        }
+
+        return numOfEnemies;
+    }
+
+
+    public object[] DetermineTurnOrder(int playerInitiative)
+    {
+        
     }
 
     public void DetermineActiveCharacter ()
@@ -102,6 +128,7 @@ class GameMaster
     private void ApplyDamage(NonPlayerCharacter defender, int damageDone)
     {
         defender.Health -= damageDone;
+        if (defender.Health < 0) defender.Health = 0;
     }
 
 }
@@ -117,6 +144,7 @@ class PlayerCharacter
     private void ApplyDamage(int damageDone)
     {
         this.Health -= damageDone;
+        if (this.Health < 0) this.Health = 0;
     }
 }
 
