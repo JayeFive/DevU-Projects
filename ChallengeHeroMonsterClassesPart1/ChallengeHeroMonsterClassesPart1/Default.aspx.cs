@@ -21,48 +21,27 @@ public partial class _Default : System.Web.UI.Page
         };
 
         Dice dice = new Dice();
+        GameMaster gameMaster = new GameMaster();
 
         // This is the main battle sequence call that sends the control through the program
         // Hero attacks first, ofcourse!
         MainBattleSequence(hero, monster, dice);
     }
 
-    // Single attack sequence
-    private bool AttackSequence(Character attacker, Character defender, Dice dice)
-    {
-        dice.numSides = attacker.DamageMax;     // Set dice size
 
-        defender.Defend(attacker.Attack(dice, out int damage), out int healthRemaining);    // Fight
-        DisplayAttackSequenceStats(attacker.Name, defender.Name, damage, healthRemaining);  // Display results
-        if (defender.Health <= 0) return false;                 // return false to stop main sequence
 
-        if (dice.RollForExtraAttack(attacker))
-        {
-            defender.Defend(attacker.Attack(dice, out damage), out healthRemaining);    // Extra attack
-            DisplayAttackSequenceStats(attacker.Name, defender.Name, damage, healthRemaining, true);  // Display results
-            if (defender.Health <= 0) return false;                 // return false to stop main sequence
-        }   
 
-        return true;                            
-    }
 
-    // Main battle sequence -- runs until either Character is dead
-    private void MainBattleSequence(Character attacker, Character defender, Dice dice)
-    {
-        while (AttackSequence(attacker, defender, dice) && AttackSequence(defender, attacker, dice)) ;
 
-        DisplayVictoryText(attacker, defender);     // while loop breaks when defender dies
-    }
-
-    // Display the attack result and health remaining of defending character
-    private void DisplayAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
+    // ************************************************* //
+    // These methods display results to the result label //
+    private void DisplayAttackResult(string attackerName, string defenderName, int damage, int health)
     {
         ResultLabel.Text += String.Format("<p>{0} attacks {1} for {2} damage! {1} has {3} health left.</p>",
-            attackerName, defenderName, damage, health);
+            attackerName, defenderName, damage, Math.Max(health, 0));
     }
 
-    // Display for an extra attack
-    private void DisplayAttackSequenceStats(string attackerName, string defenderName, int damage, int health, bool extraAttack)
+    private void DisplayExtraAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
     {
         ResultLabel.Text += String.Format("<p>{0} gains an extra attack for {2} damage! {1} has {3} health left.</p>",
             attackerName, defenderName, damage, health);
@@ -72,6 +51,7 @@ public partial class _Default : System.Web.UI.Page
     {
         ResultLabel.Text += String.Format("{0} has slain {1}!", winner.Name, loser.Name);
     }
+    // ************************************************* //
 }
 
 class Character
@@ -83,14 +63,13 @@ class Character
 
     public int Attack(Dice dice, out int damage)
     {
-        damage = dice.roll();
+        damage = dice.Roll();
         return damage;
     }
 
-    public void Defend(int damage, out int healthRemaining)
+    public void Defend(int damage, out int health)
     {
-        healthRemaining = Health - damage;
-        Health = healthRemaining;
+        health = this.Health - damage;
     }
 }
 
@@ -98,18 +77,35 @@ class Dice
 {
     Random random = new Random();
 
-    public int numSides { get; set; }
+    public int NumSides { get; set; }
 
-    // Roll the Dice!
-    public int roll()
+    public int Roll(int minRoll, int maxRoll)
     {
-        return random.Next(1, this.numSides);
+        return random.Next(minRoll, maxRoll);
     }
 
-    // Secondary roll function to determine extra attacks
     public bool RollForExtraAttack(Character attacker)
     {
         if (random.Next(1, 100) <= attacker.AttackBonus) return true;
+        else return false;
+    }
+}
+
+class GameMaster
+{
+    public int RollForAttack(int damageMax, Dice dice)
+    {
+        return dice.Roll(1, damageMax);
+    }
+
+    public void ApplyDamage(Character defender, int damageDone)
+    {
+        defender.Health -= damageDone;
+    }
+
+    public bool RollForExtraAttackChance(int attackBonus, Dice dice)
+    {
+        if (dice.Roll(1, 100) <= attackBonus) return true;
         else return false;
     }
 }
