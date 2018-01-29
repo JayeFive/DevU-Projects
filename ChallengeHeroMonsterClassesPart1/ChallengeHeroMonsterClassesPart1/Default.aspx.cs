@@ -60,17 +60,6 @@ class Character
     public int Health { get; set; }
     public int DamageMax { get; set; }
     public int AttackBonus { get; set; }
-
-    public int Attack(Dice dice, out int damage)
-    {
-        damage = dice.Roll();
-        return damage;
-    }
-
-    public void Defend(int damage, out int health)
-    {
-        health = this.Health - damage;
-    }
 }
 
 class Dice
@@ -101,6 +90,12 @@ class GameMaster
     public void ApplyDamage(Character defender, int damageDone)
     {
         defender.Health -= damageDone;
+    }
+
+    public bool DetermineIncapacitation(int health)
+    {
+        if (health <= 0) return true;
+        else return false;
     }
 
     public bool RollForExtraAttackChance(int attackBonus, Dice dice)
