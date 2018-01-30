@@ -33,9 +33,8 @@ public partial class _Default : System.Web.UI.Page
 
         while (!heroIsIncapacitated)
         {
-            PerformCombatRound(dice, characterTurnOrder, enemyList);
+            PerformCombatRound(dice, characterTurnOrder, enemyList, out heroIsIncapacitated);
         }
-
     }
 
     private List<Character> InitializeCombat()
@@ -44,18 +43,19 @@ public partial class _Default : System.Web.UI.Page
         return gameMaster.CreateCharacterTurnOrder(dice, hero);
     }
 
-    private void PerformCombatRound(Dice dice, List<Character> characterTurnOrder, List<Character> enemyList)
+    private void PerformCombatRound(Dice dice, List<Character> characterTurnOrder, List<Character> enemyList, out bool heroIsIncapacitated)
     {
+        heroIsIncapacitated = false;
         foreach(var character in characterTurnOrder)
         {
             if (character == hero) PerformAttack(dice, enemyList);
-            else PerformAttack(dice, characterTurnOrder);
+            else PerformAttack(dice, character, out heroIsIncapacitated);
         }
     }
 
     private void PerformAttack(Dice dice, List<Character> enemyList)    // Hero Attack
     {
-        var enemy = enemyList[dice.Roll(1, enemyList.Count)];
+        var enemy = enemyList.ElementAt(dice.Roll(0, enemyList.Count - 1));
         var damage = gameMaster.ApplyDamage(enemy, dice.RollForAttack(hero.DamageMax));
         DisplayAttackResult(hero.Name, enemy.Name, damage, enemy.Health);
         CheckForIncapacitation(enemyList);
@@ -138,6 +138,7 @@ class GameMaster
     {
         characterTurnOrder.Add(hero);
         RollForNPCInitiative(dice);
+        foreach (var enemy in enemyList) characterTurnOrder.Add(enemy);
         characterTurnOrder.Sort((x, y) => x.Initiative.CompareTo(y.Initiative));
 
         return characterTurnOrder;
