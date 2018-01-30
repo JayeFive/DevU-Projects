@@ -98,7 +98,7 @@ class GameMaster
     List<Character> enemyList = new List<Character>();
     List<Character> characterTurnOrder = new List<Character>();
     Dice dice = new Dice();
-    bool heroIsAlive = true;
+    Character activeCharacter;
     Character hero = new Character
     {
         Name = "Johnny",
@@ -141,11 +141,11 @@ class GameMaster
 
     public void EnterBattleLoop()
     {
-        foreach(var participant in characterTurnOrder)
+        foreach (var activeCharacter in characterTurnOrder)
         {
             if (ContinueCombat())
             {
-                AttackSequence(participant);
+                
             }
             else return;
         }
@@ -158,7 +158,7 @@ class GameMaster
         return false;
     }
 
-    public void AttackSequence(Character attacker)
+    private void AttackRollSequence(Character attacker)
     {
 
         RollForAttack(attacker);
@@ -178,11 +178,10 @@ class GameMaster
         return damage;
     }
 
-
     public bool CheckForEnemiesLeft()
     {
-        foreach (var enemy in enemyList) if (enemy.Health != 0) return true; else return false;
-        return true;
+        if (enemyList.Count == 0) return false;
+        else return true;
     }
 
     public bool CheckIfHeroAlive()
