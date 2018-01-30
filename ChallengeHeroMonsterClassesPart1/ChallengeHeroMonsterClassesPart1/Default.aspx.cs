@@ -141,10 +141,31 @@ class GameMaster
 
     public void EnterBattleLoop()
     {
-
+        foreach(var participant in characterTurnOrder)
+        {
+            if (ContinueCombat())
+            {
+                AttackSequence(participant);
+            }
+            else return;
+        }
     }
 
-    public void RollForAttack(Character activeCharacter)
+    public bool ContinueCombat()
+    {
+        if (CheckForEnemiesLeft()) return true;
+        else if (CheckIfHeroAlive()) return true;
+        return false;
+    }
+
+    public void AttackSequence(Character attacker)
+    {
+
+        RollForAttack(attacker);
+        ApplyDamage()
+    }
+
+    public void RollForAttack(Character attacker)
     {
         
     }
@@ -155,6 +176,19 @@ class GameMaster
         if (defender.Health < 0) defender.Health = 0;
 
         return damage;
+    }
+
+
+    public bool CheckForEnemiesLeft()
+    {
+        foreach (var enemy in enemyList) if (enemy.Health != 0) return true; else return false;
+        return true;
+    }
+
+    public bool CheckIfHeroAlive()
+    {
+        if (hero.Health == 0) return false;
+        else return true;
     }
 }
 
