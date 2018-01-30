@@ -20,8 +20,9 @@ public partial class _Default : System.Web.UI.Page
     {
         bool heroIsIncapacitated = false;
         gameMaster.CreateEnemyList(numEnemiesToSpawn);
-        gameMaster.CreateCharacterTurnOrder();
-        
+        gameMaster.RollForNPCInitiative();
+        gameMaster.PopulateCharacterTurnOrder();
+        gameMaster.DetermineCharacterTurnOrder();
 
         while (!heroIsIncapacitated)
         {
@@ -134,30 +135,20 @@ class GameMaster
         }
     }
 
-
-    public List<Character> CreateCharacterTurnOrder()
+    public void RollForNPCInitiative()
     {
-        RollForNPCInitiative(dice);
-        
-
-        return characterTurnOrder;
+        foreach (var enemy in enemyList) enemy.Initiative = dice.RollForInitiative(enemy.InitiativeRoll);
     }
 
-    private void PopulateCharacterTurnOrder(Character hero)
+    public void PopulateCharacterTurnOrder()
     {
         characterTurnOrder.Add(hero);
         foreach (var enemy in enemyList) characterTurnOrder.Add(enemy);
     }
 
-    private void DetermineCharacterTurnOrder()
+    public void DetermineCharacterTurnOrder()
     {
         characterTurnOrder.Sort((x, y) => x.Initiative.CompareTo(y.Initiative));
-    }
-
-
-    private void RollForNPCInitiative(Dice dice)
-    {
-        foreach (var enemy in enemyList) enemy.Initiative = dice.RollForInitiative(enemy.InitiativeRoll);
     }
 
     public int ApplyDamage(Character defender, int damage)
