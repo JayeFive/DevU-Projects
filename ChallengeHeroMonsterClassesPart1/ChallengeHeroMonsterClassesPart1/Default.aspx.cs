@@ -27,38 +27,68 @@ public partial class _Default : System.Web.UI.Page
     // ******** Game Events ******** //
     private void MainGameSequence()
     {
+        var heroIsIncapacitated = false;
         var enemyList = gameMaster.CreateEnemyList(numEnemiesToSpawn);
         var characterTurnOrder = InitializeCombat();
-        PerformCombatRound(dice, characterTurnOrder, enemyList);
+
+        while (!heroIsIncapacitated)
+        {
+            PerformCombatRound(dice, characterTurnOrder, enemyList);
+        }
+
     }
 
-    private Character[] InitializeCombat()
+    private List<Character> InitializeCombat()
     {
         hero.Initiative = dice.RollForInitiative(hero.InitiativeRoll);
-        return gameMaster.DetermineTurnOrder(dice, hero);
+        return gameMaster.CreateCharacterTurnOrder(dice, hero);
     }
 
-    private void PerformCombatRound(Dice dice, Character[] characterTurnOrder, Character[] enemyList)
+    private void PerformCombatRound(Dice dice, List<Character> characterTurnOrder, List<Character> enemyList)
     {
-        for (var i = 0; i < characterTurnOrder.Length; i++)
+        foreach(var character in characterTurnOrder)
         {
-            if (characterTurnOrder[i] == hero) PerformAttack(dice, enemyList);
-            else PerformAttack(dice, characterTurnOrder[i]);
+            if (character == hero) PerformAttack(dice, enemyList);
+            else PerformAttack(dice, characterTurnOrder);
         }
     }
 
-    private void PerformAttack(Dice dice, Character[] enemyList)
+    private void PerformAttack(Dice dice, List<Character> enemyList)    // Hero Attack
     {
-        var enemyToAttack = dice.Roll(1, enemyList.Length);
-        gameMaster.ApplyDamage(enemyList[enemyToAttack], dice.RollForAttack(hero.DamageMax)); 
+        var enemy = enemyList[dice.Roll(1, enemyList.Count)];
+        var damage = gameMaster.ApplyDamage(enemy, dice.RollForAttack(hero.DamageMax));
+        DisplayAttackResult(hero.Name, enemy.Name, damage, enemy.Health);
+        CheckForIncapacitation(enemyList);
     }
     
-    private void PerformAttack(Dice dice, Character enemy)
+    private void PerformAttack(Dice dice, Character enemy, out bool heroIsIncapacitated)          // Enemy attack
     {
-        gameMaster.ApplyDamage(hero, dice.RollForAttack(enemy.DamageMax));
+        var damage = gameMaster.ApplyDamage(hero, dice.RollForAttack(enemy.DamageMax));
+        DisplayAttackResult(enemy.Name, hero.Name, damage, enemy.Health);
+        CheckForIncapacitation(hero, out heroIsIncapacitated);
     }
 
+    private void CheckForIncapacitation(List<Character> enemyList)
+    {
+        foreach (var enemy in enemyList)
+        {
+            if (enemy.Health == 0)
+            {
+                DisplayCharacterIncapacitation(enemy.Name);
+                enemyList.Remove(enemy);
+            }
+        }
+    }
 
+    private void CheckForIncapacitation(Character hero, out bool heroIsIncapacitated)
+    {
+        if (hero.Health == 0)
+        {
+            DisplayCharacterIncapacitation(hero.Name);
+            heroIsIncapacitated = true;
+        }
+        else heroIsIncapacitated = false;
+    }
 
     // ************************************************* //
     // These methods display results to the result label //
@@ -74,11 +104,10 @@ public partial class _Default : System.Web.UI.Page
             attackerName, defenderName, damage, health);
     }
 
-    //private void DisplayVictoryText(Character winner, Character loser)
-    //{
-    //    ResultLabel.Text += String.Format("{0} has slain {1}!", winner.Name, loser.Name);
-    //}
-    // ************************************************* //
+    private void DisplayCharacterIncapacitation(string defenderName)
+    {
+        ResultLabel.Text = String.Format("<p>{0} has been slain!</p>", defenderName);
+    }
 }
 
 // ********************************* //
@@ -88,7 +117,7 @@ class GameMaster
     List<Character> enemyList = new List<Character>();
     List<Character> characterTurnOrder = new List<Character>();
 
-    public Character[] CreateEnemyList(int numEnemiesToSpawn)
+    public List<Character> CreateEnemyList(int numEnemiesToSpawn)
     {
         for (var i = 0; i < numEnemiesToSpawn; i++)
         {
@@ -102,16 +131,16 @@ class GameMaster
             });
         }
 
-        return enemyList.ToArray();
+        return enemyList;
     }
 
-    public Character[] DetermineTurnOrder(Dice dice, Character hero)
+    public List<Character> CreateCharacterTurnOrder(Dice dice, Character hero)
     {
         characterTurnOrder.Add(hero);
         RollForNPCInitiative(dice);
         characterTurnOrder.Sort((x, y) => x.Initiative.CompareTo(y.Initiative));
 
-        return characterTurnOrder.ToArray();
+        return characterTurnOrder;
     }
 
     private void RollForNPCInitiative(Dice dice)
@@ -122,10 +151,12 @@ class GameMaster
         }
     }
 
-    public void ApplyDamage(Character defender, int damageDone)
+    public int ApplyDamage(Character defender, int damage)
     {
-        defender.Health -= damageDone;
+        defender.Health -= damage;
         if (defender.Health < 0) defender.Health = 0;
+
+        return damage;
     }
 }
 
