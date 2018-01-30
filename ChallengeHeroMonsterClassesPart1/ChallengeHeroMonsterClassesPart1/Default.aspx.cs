@@ -35,8 +35,8 @@ public partial class _Default : System.Web.UI.Page
     private void MainGameSequence()
     {
         var enemyList = gameMaster.CreateEnemyList(numEnemiesToSpawn);
-        var turnOrder = InitializeCombat();
-        PerformCombatRound(dice, turnOrder, enemyList);
+        var characterTurnOrder = InitializeCombat();
+        PerformCombatRound(dice, characterTurnOrder, enemyList);
     }
 
     private Character[] InitializeCombat()
@@ -45,18 +45,18 @@ public partial class _Default : System.Web.UI.Page
         return gameMaster.DetermineTurnOrder(dice, hero);
     }
 
-    private void PerformCombatRound(Dice dice, Character[] turnOrder, Character[] enemyList)
+    private void PerformCombatRound(Dice dice, Character[] characterTurnOrder, Character[] enemyList)
     {
-        for (var i = 0; i < turnOrder.Length; i++)
+        for (var i = 0; i < characterTurnOrder.Length; i++)
         {
-            if (turnOrder[i] == hero) PerformAttack(dice, enemyList);
-            else PerformAttack(dice, turnOrder[i]);
+            if (characterTurnOrder[i] == hero) PerformAttack(dice, enemyList);
+            else PerformAttack(dice, characterTurnOrder[i]);
         }
     }
 
     private void PerformAttack(Dice dice, Character[] enemyList)
     {
-        var enemyToAttack = dice.GenerateRandomNumber(1, enemyList.Length);
+        var enemyToAttack = dice.Roll(1, enemyList.Length);
         gameMaster.ApplyDamage(enemyList[enemyToAttack], dice.RollForAttack(hero.DamageMax)); 
     }
     
@@ -93,7 +93,7 @@ public partial class _Default : System.Web.UI.Page
 class GameMaster
 {
     List<Character> enemyList = new List<Character>();
-    List<Character> turnOrder = new List<Character>();
+    List<Character> characterTurnOrder = new List<Character>();
 
     public Character[] CreateEnemyList(int numEnemiesToSpawn)
     {
@@ -114,11 +114,11 @@ class GameMaster
 
     public Character[] DetermineTurnOrder(Dice dice, Character hero)
     {
-        turnOrder.Add(hero);
+        characterTurnOrder.Add(hero);
         RollForNPCInitiative(dice);
-        turnOrder.Sort((x, y) => x.Initiative.CompareTo(y.Initiative));
+        characterTurnOrder.Sort((x, y) => x.Initiative.CompareTo(y.Initiative));
 
-        return turnOrder.ToArray();
+        return characterTurnOrder.ToArray();
     }
 
     private void RollForNPCInitiative(Dice dice)
@@ -170,11 +170,6 @@ class Dice
     {
         if (this.Roll(1, 100) <= attackBonus) return true;
         else return false;
-    }
-
-    public int GenerateRandomNumber(int min, int max)
-    {
-        return random.Next(min, max);
     }
 }
 // *********** //
