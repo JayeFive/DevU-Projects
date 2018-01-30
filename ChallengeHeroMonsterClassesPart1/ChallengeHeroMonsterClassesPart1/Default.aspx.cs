@@ -110,6 +110,7 @@ class GameMaster
         {
             activeCharacterTurnIndex = 0;
             activeCharacter = characterTurnOrder.ElementAt(activeCharacterTurnIndex);
+            activeCharacterTurnIndex++;
         }
     }
 
