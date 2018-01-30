@@ -23,13 +23,6 @@ public partial class _Default : System.Web.UI.Page
         InitiativeRoll = 10
     };
 
-    // Generic checks //
-    private bool DetermineIncapacitation(int health)
-    {
-        if (health == 0) return true;
-        else return false;
-    }
-
     // ***************************** //
     // ******** Game Events ******** //
     private void MainGameSequence()
