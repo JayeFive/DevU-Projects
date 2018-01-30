@@ -101,18 +101,19 @@ class GameMaster
 
     private void DetermineActiveCharacter()
     {
-        if (activeCharacterTurnIndex < characterTurnOrder.Count) SetActiveCharacter();
-        else
-        {
-            activeCharacterTurnIndex = 0;
-            SetActiveCharacter();
-        }
+        if (activeCharacterTurnIndex == characterTurnOrder.Count) ResetCharacterTurnIndex();
+        SetActiveCharacterAndIterate();
     }
 
-    private void SetActiveCharacter()
+    private void SetActiveCharacterAndIterate()
     {
         activeCharacter = characterTurnOrder.ElementAt(activeCharacterTurnIndex);
         activeCharacterTurnIndex++;
+    }
+
+    private void ResetCharacterTurnIndex()
+    {
+        activeCharacterTurnIndex = 0;
     }
 
     private void HeroAttackSequence()
