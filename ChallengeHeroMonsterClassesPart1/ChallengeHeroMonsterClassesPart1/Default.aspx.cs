@@ -30,14 +30,6 @@ public partial class _Default : System.Web.UI.Page
         }
     }
 
-    
-
-    private List<Character> InitializeCombat()
-    {
-        hero.Initiative = dice.RollForInitiative(hero.InitiativeRoll);
-        return gameMaster.CreateCharacterTurnOrder(dice, hero);
-    }
-
     private void PerformCombatRound(Dice dice, List<Character> characterTurnOrder, List<Character> enemyList, out bool heroIsIncapacitated)
     {
         heroIsIncapacitated = false;
