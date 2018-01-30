@@ -89,7 +89,7 @@ class GameMaster
 
     public void DetermineCharacterTurnOrder()
     {
-        characterTurnOrder.Sort((x, y) => x.Initiative.CompareTo(y.Initiative));
+        characterTurnOrder.Sort((x, y) => y.Initiative.CompareTo(x.Initiative));
     }
 
     public void EnterBattleLoop()
