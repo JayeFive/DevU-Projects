@@ -23,72 +23,23 @@ public partial class _Default : System.Web.UI.Page
         gameMaster.EnterBattleLoop();
     }
 
-    
 
-    //private void PerformCombatRound(Dice dice, List<Character> characterTurnOrder, List<Character> enemyList, out bool heroIsIncapacitated)
+    //private void DisplayAttackResult(string attackerName, string defenderName, int damage, int health)
     //{
-    //    heroIsIncapacitated = false;
-    //    foreach(var character in characterTurnOrder)
-    //    {
-    //        if (character == hero) PerformAttack(dice, enemyList);
-    //        else PerformAttack(dice, character, out heroIsIncapacitated);
-    //    }
+    //    ResultLabel.Text += String.Format("<p>{0} attacks {1} for {2} damage! {1} has {3} health left.</p>",
+    //        attackerName, defenderName, damage, health);
     //}
 
-    //private void PerformAttack(Dice dice, List<Character> enemyList)    // Hero Attack
+    //private void DisplayExtraAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
     //{
-    //    var enemy = enemyList.ElementAt(dice.Roll(0, enemyList.Count - 1));
-    //    var damage = gameMaster.ApplyDamage(enemy, dice.RollForAttack(hero.DamageMax));
-    //    DisplayAttackResult(hero.Name, enemy.Name, damage, enemy.Health);
-    //    CheckForIncapacitation(enemyList);
-    //}
-    
-    //private void PerformAttack(Dice dice, Character enemy, out bool heroIsIncapacitated)          // Enemy attack
-    //{
-    //    var damage = gameMaster.ApplyDamage(hero, dice.RollForAttack(enemy.DamageMax));
-    //    DisplayAttackResult(enemy.Name, hero.Name, damage, enemy.Health);
-    //    CheckForIncapacitation(hero, out heroIsIncapacitated);
-        
+    //    ResultLabel.Text += String.Format("<p>{0} gains an extra attack for {2} damage! {1} has {3} health left.</p>",
+    //        attackerName, defenderName, damage, health);
     //}
 
-    //private void CheckForIncapacitation(List<Character> enemyList)
+    //public void DisplayCharacterIncapacitation(string defenderName)
     //{
-    //    foreach (var enemy in enemyList)
-    //    {
-    //        if (enemy.Health == 0)
-    //        {
-    //            DisplayCharacterIncapacitation(enemy.Name);
-    //            enemyList.Remove(enemy);
-    //        }
-    //    }
+    //    ResultLabel.Text = String.Format("<p>{0} has been slain!</p>", defenderName);
     //}
-
-    //private void CheckForIncapacitation(Character hero, out bool heroIsIncapacitated)
-    //{
-    //    if (hero.Health == 0)
-    //    {
-    //        DisplayCharacterIncapacitation(hero.Name);
-    //        heroIsIncapacitated = true;
-    //    }
-    //    else heroIsIncapacitated = false;
-    //}
-
-    private void DisplayAttackResult(string attackerName, string defenderName, int damage, int health)
-    {
-        ResultLabel.Text += String.Format("<p>{0} attacks {1} for {2} damage! {1} has {3} health left.</p>",
-            attackerName, defenderName, damage, health);
-    }
-
-    private void DisplayExtraAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
-    {
-        ResultLabel.Text += String.Format("<p>{0} gains an extra attack for {2} damage! {1} has {3} health left.</p>",
-            attackerName, defenderName, damage, health);
-    }
-
-    public void DisplayCharacterIncapacitation(string defenderName)
-    {
-        ResultLabel.Text = String.Format("<p>{0} has been slain!</p>", defenderName);
-    }
 
 }
 
@@ -99,6 +50,8 @@ class GameMaster
     List<Character> characterTurnOrder = new List<Character>();
     Dice dice = new Dice();
     Character activeCharacter;
+    Character activeTarget;
+    int activeCharacterTurnIndex = 0;
     Character hero = new Character
     {
         Name = "Johnny",
@@ -141,53 +94,60 @@ class GameMaster
 
     public void EnterBattleLoop()
     {
-        foreach (var activeCharacter in characterTurnOrder)
+        SelectActiveCharacter();
+        if (activeCharacter == hero) HeroAttackSequence();
+        else HeroDefendSequence();
+    }
+
+    private void SelectActiveCharacter()
+    {
+        if (activeCharacterTurnIndex < characterTurnOrder.Count)
         {
-            if (ContinueCombat())
-            {
-                
-            }
-            else return;
+            activeCharacter = characterTurnOrder.ElementAt(activeCharacterTurnIndex);
+            activeCharacterTurnIndex++;
+        }
+        else
+        {
+            activeCharacterTurnIndex = 0;
+            activeCharacter = characterTurnOrder.ElementAt(activeCharacterTurnIndex);
         }
     }
 
-    public bool ContinueCombat()
+    private void HeroAttackSequence()
     {
-        if (CheckForEnemiesLeft()) return true;
-        else if (CheckIfHeroAlive()) return true;
-        return false;
+        SelectActiveTarget();
+        activeTarget.ApplyDamage(RollForAttack());
+        if (activeTarget.Health == 0) RemoveFromEnemyList();
+        if (CheckForRemainingEnemies()) EnterBattleLoop();
+        else return;
     }
 
-    private void AttackRollSequence(Character attacker)
+    private void HeroDefendSequence()
     {
-
-        RollForAttack(attacker);
-        ApplyDamage()
+        hero.ApplyDamage(RollForAttack());
+        if (hero.Health == 0) return;
+        else EnterBattleLoop();
     }
 
-    public void RollForAttack(Character attacker)
+    private void SelectActiveTarget()
     {
-        
+        activeTarget = enemyList.ElementAt(dice.Roll(0, enemyList.Count - 1));
     }
 
-    public int ApplyDamage(Character defender, int damage)
+    public int RollForAttack()
     {
-        defender.Health -= damage;
-        if (defender.Health < 0) defender.Health = 0;
-
-        return damage;
+        return dice.RollForAttack(activeCharacter.DamageMax);
     }
 
-    public bool CheckForEnemiesLeft()
+    private void RemoveFromEnemyList()
     {
-        if (enemyList.Count == 0) return false;
-        else return true;
+        enemyList.Remove(activeTarget);
     }
 
-    public bool CheckIfHeroAlive()
+    private bool CheckForRemainingEnemies()
     {
-        if (hero.Health == 0) return false;
-        else return true;
+        if (enemyList.Count != 0) return true;
+        else return false;
     }
 }
 
@@ -199,6 +159,12 @@ class Character
     public int AttackBonus { get; set; }
     public int InitiativeRoll { get; set; }
     public int Initiative { get; set; }
+
+    internal void ApplyDamage(int damage)
+    {
+        this.Health -= damage;
+        if (this.Health < 0) Health = 0;
+    }
 }
 
 class Dice
