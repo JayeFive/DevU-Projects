@@ -20,7 +20,7 @@ public partial class _Default : System.Web.UI.Page
     {
         bool heroIsIncapacitated = false;
         gameMaster.CreateEnemyList(numEnemiesToSpawn);
-        gameMaster.RollForNPCInitiative();
+        gameMaster.RollForInitiative();
         gameMaster.PopulateCharacterTurnOrder();
         gameMaster.DetermineCharacterTurnOrder();
 
@@ -135,8 +135,9 @@ class GameMaster
         }
     }
 
-    public void RollForNPCInitiative()
+    public void RollForInitiative()
     {
+        hero.Initiative = dice.RollForInitiative(hero.InitiativeRoll);
         foreach (var enemy in enemyList) enemy.Initiative = dice.RollForInitiative(enemy.InitiativeRoll);
     }
 
