@@ -21,6 +21,7 @@ public partial class _Default : System.Web.UI.Page
         bool heroIsIncapacitated = false;
         gameMaster.CreateEnemyList(numEnemiesToSpawn);
         gameMaster.CreateCharacterTurnOrder();
+        
 
         while (!heroIsIncapacitated)
         {
@@ -118,7 +119,7 @@ class GameMaster
         InitiativeRoll = 10
     };
 
-    public List<Character> CreateEnemyList(int numEnemiesToSpawn)
+    public void CreateEnemyList(int numEnemiesToSpawn)
     {
         for (var i = 0; i < numEnemiesToSpawn; i++)
         {
@@ -131,15 +132,13 @@ class GameMaster
                 InitiativeRoll = 2
             });
         }
-
-        return enemyList;
     }
 
 
     public List<Character> CreateCharacterTurnOrder()
     {
         RollForNPCInitiative(dice);
-        characterTurnOrder.Sort((x, y) => x.Initiative.CompareTo(y.Initiative));
+        
 
         return characterTurnOrder;
     }
@@ -150,7 +149,11 @@ class GameMaster
         foreach (var enemy in enemyList) characterTurnOrder.Add(enemy);
     }
 
-    private void DetermineCharacterTurnOrder
+    private void DetermineCharacterTurnOrder()
+    {
+        characterTurnOrder.Sort((x, y) => x.Initiative.CompareTo(y.Initiative));
+    }
+
 
     private void RollForNPCInitiative(Dice dice)
     {
