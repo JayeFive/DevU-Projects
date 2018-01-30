@@ -94,24 +94,25 @@ class GameMaster
 
     public void EnterBattleLoop()
     {
-        SelectActiveCharacter();
+        DetermineActiveCharacter();
         if (activeCharacter == hero) HeroAttackSequence();
         else HeroDefendSequence();
     }
 
-    private void SelectActiveCharacter()
+    private void DetermineActiveCharacter()
     {
-        if (activeCharacterTurnIndex < characterTurnOrder.Count)
-        {
-            activeCharacter = characterTurnOrder.ElementAt(activeCharacterTurnIndex);
-            activeCharacterTurnIndex++;
-        }
+        if (activeCharacterTurnIndex < characterTurnOrder.Count) SetActiveCharacter();
         else
         {
             activeCharacterTurnIndex = 0;
-            activeCharacter = characterTurnOrder.ElementAt(activeCharacterTurnIndex);
-            activeCharacterTurnIndex++;
+            SetActiveCharacter();
         }
+    }
+
+    private void SetActiveCharacter()
+    {
+        activeCharacter = characterTurnOrder.ElementAt(activeCharacterTurnIndex);
+        activeCharacterTurnIndex++;
     }
 
     private void HeroAttackSequence()
