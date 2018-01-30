@@ -10,32 +10,25 @@ public partial class _Default : System.Web.UI.Page
         MainGameSequence();
     }
 
-    const int numEnemiesToSpawn = 1;     // To be used later for multiple enemies
+    const int numEnemiesToSpawn = 1;     // To be used later to spawn multiple enemies
     Dice dice = new Dice();
     GameMaster gameMaster = new GameMaster();
+    
 
-    Character hero = new Character
-    {
-        Name = "Johnny",
-        Health = 100,
-        DamageMax = 20,
-        AttackBonus = 15,
-        InitiativeRoll = 10
-    };
 
-    // ***************************** //
-    // ******** Game Events ******** //
     private void MainGameSequence()
     {
-        var heroIsIncapacitated = false;
-        var enemyList = gameMaster.CreateEnemyList(numEnemiesToSpawn);
-        var characterTurnOrder = InitializeCombat();
+        bool heroIsIncapacitated = false;
+        gameMaster.CreateEnemyList(numEnemiesToSpawn);
+        gameMaster.CreateCharacterTurnOrder();
 
         while (!heroIsIncapacitated)
         {
             PerformCombatRound(dice, characterTurnOrder, enemyList, out heroIsIncapacitated);
         }
     }
+
+    
 
     private List<Character> InitializeCombat()
     {
@@ -66,6 +59,7 @@ public partial class _Default : System.Web.UI.Page
         var damage = gameMaster.ApplyDamage(hero, dice.RollForAttack(enemy.DamageMax));
         DisplayAttackResult(enemy.Name, hero.Name, damage, enemy.Health);
         CheckForIncapacitation(hero, out heroIsIncapacitated);
+        
     }
 
     private void CheckForIncapacitation(List<Character> enemyList)
@@ -90,8 +84,6 @@ public partial class _Default : System.Web.UI.Page
         else heroIsIncapacitated = false;
     }
 
-    // ************************************************* //
-    // These methods display results to the result label //
     private void DisplayAttackResult(string attackerName, string defenderName, int damage, int health)
     {
         ResultLabel.Text += String.Format("<p>{0} attacks {1} for {2} damage! {1} has {3} health left.</p>",
@@ -108,14 +100,23 @@ public partial class _Default : System.Web.UI.Page
     {
         ResultLabel.Text = String.Format("<p>{0} has been slain!</p>", defenderName);
     }
+
 }
 
-// ********************************* //
-// ********** All classes ********** //
+
 class GameMaster
 {
-    List<Character> enemyList = new List<Character>();
-    List<Character> characterTurnOrder = new List<Character>();
+    public List<Character> enemyList = new List<Character>();
+    public List<Character> characterTurnOrder = new List<Character>();
+    Dice dice = new Dice();
+    Character hero = new Character
+    {
+        Name = "Johnny",
+        Health = 100,
+        DamageMax = 20,
+        AttackBonus = 15,
+        InitiativeRoll = 10
+    };
 
     public List<Character> CreateEnemyList(int numEnemiesToSpawn)
     {
@@ -134,22 +135,26 @@ class GameMaster
         return enemyList;
     }
 
-    public List<Character> CreateCharacterTurnOrder(Dice dice, Character hero)
+
+    public List<Character> CreateCharacterTurnOrder()
     {
-        characterTurnOrder.Add(hero);
         RollForNPCInitiative(dice);
-        foreach (var enemy in enemyList) characterTurnOrder.Add(enemy);
         characterTurnOrder.Sort((x, y) => x.Initiative.CompareTo(y.Initiative));
 
         return characterTurnOrder;
     }
 
+    private void PopulateCharacterTurnOrder(Character hero)
+    {
+        characterTurnOrder.Add(hero);
+        foreach (var enemy in enemyList) characterTurnOrder.Add(enemy);
+    }
+
+    private void DetermineCharacterTurnOrder
+
     private void RollForNPCInitiative(Dice dice)
     {
-        foreach (var enemy in enemyList)
-        {
-            enemy.Initiative = dice.RollForInitiative(enemy.InitiativeRoll);
-        }
+        foreach (var enemy in enemyList) enemy.Initiative = dice.RollForInitiative(enemy.InitiativeRoll);
     }
 
     public int ApplyDamage(Character defender, int damage)
@@ -197,6 +202,11 @@ class Dice
         else return false;
     }
 }
-// *********** //
+
+
+
+
+
+
 
 
