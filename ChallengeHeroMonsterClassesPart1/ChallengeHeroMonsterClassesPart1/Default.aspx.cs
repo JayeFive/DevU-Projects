@@ -15,7 +15,7 @@ public partial class _Default : System.Web.UI.Page
 
     private void MainGameSequence()
     {
-        var resultLabel = ResultLabel;
+        gameMaster.DisplayTextInitializer();
         gameMaster.CreateEnemyList(numEnemiesToSpawn);
         gameMaster.PopulateCharacterTurnOrder();
         gameMaster.RollForInitiative();
@@ -23,12 +23,14 @@ public partial class _Default : System.Web.UI.Page
         gameMaster.EnterBattleLoop();
     }
 
-
-    //private void DisplayAttackResult(string attackerName, string defenderName, int damage, int health)
-    //{
-    //    ResultLabel.Text += String.Format("<p>{0} attacks {1} for {2} damage! {1} has {3} health left.</p>",
-    //        attackerName, defenderName, damage, health);
-    //}
+    public void DisplayAttackResult()
+    {
+        ResultLabel.Text += String.Format("<p>{0} attacks {1} for {2} damage! {1} has {3} health left.</p>",
+            gameMaster.DisplayLabelTextArgs.TryGetValue("attackerName", out string attackerName),
+            gameMaster.DisplayLabelTextArgs.TryGetValue("defenderName", out string defenderName),
+            gameMaster.DisplayLabelTextArgs.TryGetValue("damage", out string damage),
+            gameMaster.DisplayLabelTextArgs.TryGetValue("healthRemaining", out string healthRemaining));
+    }
 
     //private void DisplayExtraAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
     //{
@@ -40,18 +42,23 @@ public partial class _Default : System.Web.UI.Page
     //{
     //    ResultLabel.Text = String.Format("<p>{0} has been slain!</p>", defenderName);
     //}
-
 }
 
 
-class GameMaster
+public class GameMaster
 {
+    public GameMaster()
+    {
+        DisplayLabelTextArgs = new Dictionary<String, String>();
+    }
+    public Dictionary<String, String> DisplayLabelTextArgs { get; set; }
     List<Character> enemyList = new List<Character>();
     List<Character> characterTurnOrder = new List<Character>();
     Dice dice = new Dice();
     Character activeCharacter;
     Character activeTarget;
     int activeCharacterTurnIndex = 0;
+
     Character hero = new Character
     {
         Name = "Johnny",
@@ -118,8 +125,14 @@ class GameMaster
 
     private void HeroAttackSequence()
     {
+        var damage = RollForAttack();
         SelectActiveTarget();
-        activeTarget.ApplyDamage(RollForAttack());
+        activeTarget.ApplyDamage(damage);
+        AddDisplayTextArg("damage", damage.ToString());
+        AddDisplayTextArg("attackerName", hero.Name);
+        AddDisplayTextArg("defenderName", activeTarget.Name);
+        AddDisplayTextArg("healthRemaining", activeTarget.Health.ToString());
+        UpdateDisplayLabel();
         if (activeTarget.Health == 0) RemoveFromEnemyList();
         if (CheckForRemainingEnemies()) EnterBattleLoop();
         else return;
@@ -140,6 +153,7 @@ class GameMaster
     public int RollForAttack()
     {
         return dice.RollForAttack(activeCharacter.DamageMax);
+        
     }
 
     private void RemoveFromEnemyList()
@@ -151,6 +165,24 @@ class GameMaster
     {
         if (enemyList.Count != 0) return true;
         else return false;
+    }
+
+    public void DisplayTextInitializer()
+    {
+        this.DisplayLabelTextArgs.Add("attackerName", "");
+        this.DisplayLabelTextArgs.Add("defenderName", "");
+        this.DisplayLabelTextArgs.Add("damage", "");
+        this.DisplayLabelTextArgs.Add("healthRemaining", "");
+    }
+
+    private void AddDisplayTextArg(string key, string value)
+    {
+        this.DisplayLabelTextArgs[key] = value;
+    }
+
+    private void UpdateDisplayLabel()
+    {
+        Default.DisplayAttackResult();
     }
 }
 
