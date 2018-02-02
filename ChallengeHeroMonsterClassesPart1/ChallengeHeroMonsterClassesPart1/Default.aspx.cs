@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 public partial class _Default : System.Web.UI.Page
 {
+    const int numEnemiesToSpawn = 1;     // To be used later to spawn multiple enemies
+    GameMaster gameMaster = new GameMaster();
+    
     protected void Page_Load(object sender, EventArgs e)
     {
         MainGameSequence();
     }
-
-    const int numEnemiesToSpawn = 1;     // To be used later to spawn multiple enemies
-    GameMaster gameMaster = new GameMaster();
 
     private void MainGameSequence()
     {
@@ -32,6 +31,8 @@ public partial class _Default : System.Web.UI.Page
             gameMaster.DisplayLabelTextArgs.TryGetValue("healthRemaining", out string healthRemaining));
     }
 
+    
+
     //private void DisplayExtraAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
     //{
     //    ResultLabel.Text += String.Format("<p>{0} gains an extra attack for {2} damage! {1} has {3} health left.</p>",
@@ -45,10 +46,11 @@ public partial class _Default : System.Web.UI.Page
 }
 
 
-public class GameMaster
+public class GameMaster 
 {
     public GameMaster()
     {
+
         DisplayLabelTextArgs = new Dictionary<String, String>();
     }
     public Dictionary<String, String> DisplayLabelTextArgs { get; set; }
@@ -82,7 +84,7 @@ public class GameMaster
             });
         }
     }
-
+    
     public void PopulateCharacterTurnOrder()
     {
         characterTurnOrder.Add(hero);
@@ -177,12 +179,12 @@ public class GameMaster
 
     private void AddDisplayTextArg(string key, string value)
     {
-        this.DisplayLabelTextArgs[key] = value;
+        DisplayLabelTextArgs[key] = value;
     }
 
-    private void UpdateDisplayLabel()
+    public void UpdateDisplayLabel()
     {
-        Default.DisplayAttackResult();
+        DisplayAttackResult();
     }
 }
 
@@ -202,9 +204,11 @@ class Character
     }
 }
 
-class Dice
+class Dice 
 {
     public int NumSides { get; set; }
+    public Random Random { get => random; set => random = value; }
+
     Random random = new Random();
 
     public int Roll(int minRoll, int maxRoll)
