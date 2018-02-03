@@ -8,34 +8,46 @@ namespace Darts
 {
     public class Dart
     {
+        public Dart()
+        {
+            NumberLandedOn = 0;
+            IsOuterRing = false;
+            IsInnerRing = false;
+            IsBullseye = false;
+            IsDoubleBullseye = false;
+        }
+
+        public int NumberLandedOn { get; set; }
+        public bool IsOuterRing { get; set; }
+        public bool IsInnerRing { get; set; }
+        public bool IsBullseye { get; set; }
+        public bool IsDoubleBullseye { get; set; }
+
+
         Random random = new Random();
-        public int ScoreOfThrow;
 
-        public int Throw()
+        public void Throw()
         {
-            int boardHitResult = random.Next(0, 20);
-            ScoreOfThrow = boardHitResult;
-            if (boardHitResult == 0) CheckForDoubleBullseye();
-            else CheckForMultiplierRing();
-
-            return ScoreOfThrow;
+            NumberLandedOn = random.Next(0, 20);
+            if (NumberLandedOn == 0) IsSingleOrDoubleBullseye();
+            else CheckForRing();
         }
 
-        internal void CheckForDoubleBullseye()
+        internal void IsSingleOrDoubleBullseye()
         {
-            if (random.Next(1, 100) > 95) ScoreOfThrow = 50;
-            else ScoreOfThrow = 25;
+            if (random.Next(1, 100) < 5) IsBullseye = true;
+            else IsDoubleBullseye = true;
         }
 
-        internal void CheckForMultiplierRing()
+        internal void CheckForRing()
         {
-            if (random.Next(1, 100) > 90) CheckForDoubleOrTripleRing();
+            if (random.Next(1, 100) < 10) IsInnerOrOuterRing();
         }
 
-        internal void CheckForDoubleOrTripleRing()
+        internal void IsInnerOrOuterRing()
         {
-            if (random.Next(0, 1) == 0) ScoreOfThrow *= 2;
-            else ScoreOfThrow *= 3;
+            if (random.Next(0, 1) == 0) IsOuterRing = true;
+            else IsInnerRing = true;
         }
     }
 }
