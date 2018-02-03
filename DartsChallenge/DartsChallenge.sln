@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DartsChallenge", "DartsChallenge\", "{FD98D77A-77CD-4B7C-BED9-636D928A6D7D}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
+		ProjectReferences = "{8e4369c6-0cc4-460c-8d37-5a44fe65a066}|ClassLibrary1.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_52682"
 		Debug.AspNetCompiler.PhysicalPath = "DartsChallenge\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52682\"

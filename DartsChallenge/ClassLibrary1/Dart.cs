@@ -19,18 +19,18 @@ namespace Darts
             else CheckForMultiplierRing();
         }
 
-        public void CheckForDoubleBullseye()
+        internal void CheckForDoubleBullseye()
         {
             if (random.Next(1, 100) > 95) ScoreOfThrow = 50;
             else ScoreOfThrow = 25;
         }
 
-        public void CheckForMultiplierRing()
+        internal void CheckForMultiplierRing()
         {
             if (random.Next(1, 100) > 90) CheckForDoubleOrTripleRing();
         }
 
-        public void CheckForDoubleOrTripleRing()
+        internal void CheckForDoubleOrTripleRing()
         {
             if (random.Next(0, 1) == 0) ScoreOfThrow *= 2;
             else ScoreOfThrow *= 3;
