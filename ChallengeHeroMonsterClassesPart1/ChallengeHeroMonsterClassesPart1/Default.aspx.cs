@@ -12,6 +12,7 @@ public partial class _Default : System.Web.UI.Page
         DisplayLabelTextArgs.Add("damage", "");
         DisplayLabelTextArgs.Add("healthRemaining", "");
     }
+
     const int numEnemiesToSpawn = 1;     // To be used later to spawn multiple enemies
     GameMaster gameMaster = new GameMaster();
     Dice dice = new Dice();
@@ -65,7 +66,11 @@ public partial class _Default : System.Web.UI.Page
         AddDisplayTextArg("defenderName", gameMaster.ActiveTarget.Name);
         AddDisplayTextArg("healthRemaining", gameMaster.ActiveTarget.Health.ToString());
         UpdateDisplayLabel();
-        CheckForIncapacitation();
+        if (gameMaster.ActiveTarget.Health == 0)
+        {
+            DisplayCharacterIncapacitation();
+            RemoveFromEnemyList();
+        }
         if (CheckForRemainingEnemies()) EnterBattleLoop();
         else return;
     }
@@ -80,17 +85,13 @@ public partial class _Default : System.Web.UI.Page
         AddDisplayTextArg("defenderName", gameMaster.Hero.Name);
         AddDisplayTextArg("healthRemaining", gameMaster.Hero.Health.ToString());
         UpdateDisplayLabel();
-        if (gameMaster.Hero.Health == 0) return;
-        else EnterBattleLoop();
-    }
-
-    private void CheckForIncapacitation()
-    {
-        if (gameMaster.ActiveTarget.Health == 0)
+        if (gameMaster.Hero.Health == 0)
         {
-            RemoveFromEnemyList();
-            DisplayCharacterIncapacitation(gameMaster.ActiveTarget.Name);
+            DisplayCharacterIncapacitation();
+            return;
         }
+
+        else EnterBattleLoop();
     }
 
     private void SelectActiveTarget()
@@ -142,9 +143,9 @@ public partial class _Default : System.Web.UI.Page
     //        attackerName, defenderName, damage, health);
     //}
 
-    public void DisplayCharacterIncapacitation(string defenderName)
+    public void DisplayCharacterIncapacitation()
     {
-        ResultLabel.Text = String.Format("<p>{0} has been slain!</p>", defenderName);
+        ResultLabel.Text += String.Format("<p>{0} has been slain!</p>", gameMaster.ActiveTarget.Name);
     }
 }
 
