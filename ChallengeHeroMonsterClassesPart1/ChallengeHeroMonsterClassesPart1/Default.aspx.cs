@@ -127,15 +127,6 @@ public partial class _Default : System.Web.UI.Page
             DisplayLabelTextArgs["healthRemaining"]);
     }
 
-
-
-
-    //private void DisplayExtraAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
-    //{
-    //    ResultLabel.Text += String.Format("<p>{0} gains an extra attack for {2} damage! {1} has {3} health left.</p>",
-    //        attackerName, defenderName, damage, health);
-    //}
-
     public void DisplayCharacterIncapacitation()
     {
         ResultLabel.Text += String.Format("<p>{0} has been slain!</p>", gameMaster.ActiveTarget.Name);
