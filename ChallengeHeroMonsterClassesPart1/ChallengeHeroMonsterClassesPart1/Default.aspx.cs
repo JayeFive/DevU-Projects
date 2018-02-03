@@ -65,12 +65,7 @@ public partial class _Default : System.Web.UI.Page
         AddDisplayTextArg("defenderName", gameMaster.ActiveTarget.Name);
         AddDisplayTextArg("healthRemaining", gameMaster.ActiveTarget.Health.ToString());
         UpdateDisplayLabel();
-        if (gameMaster.ActiveTarget.Health == 0)
-        {
-            RemoveFromEnemyList();
-            DisplayCharacterIncapacitation(gameMaster.)
-        }
-
+        CheckForIncapacitation();
         if (CheckForRemainingEnemies()) EnterBattleLoop();
         else return;
     }
@@ -78,6 +73,7 @@ public partial class _Default : System.Web.UI.Page
     private void HeroDefendSequence()
     {
         var damage = RollForAttack();
+        gameMaster.ActiveTarget = gameMaster.Hero;
         gameMaster.Hero.ApplyDamage(damage);
         AddDisplayTextArg("damage", damage.ToString());
         AddDisplayTextArg("attackerName", gameMaster.ActiveCharacter.Name);
@@ -86,6 +82,15 @@ public partial class _Default : System.Web.UI.Page
         UpdateDisplayLabel();
         if (gameMaster.Hero.Health == 0) return;
         else EnterBattleLoop();
+    }
+
+    private void CheckForIncapacitation()
+    {
+        if (gameMaster.ActiveTarget.Health == 0)
+        {
+            RemoveFromEnemyList();
+            DisplayCharacterIncapacitation(gameMaster.ActiveTarget.Name);
+        }
     }
 
     private void SelectActiveTarget()
