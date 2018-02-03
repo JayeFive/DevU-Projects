@@ -11,12 +11,14 @@ namespace Darts
         Random random = new Random();
         public int ScoreOfThrow;
 
-        public void Throw()
+        public int Throw()
         {
             int boardHitResult = random.Next(0, 20);
             ScoreOfThrow = boardHitResult;
             if (boardHitResult == 0) CheckForDoubleBullseye();
             else CheckForMultiplierRing();
+
+            return ScoreOfThrow;
         }
 
         internal void CheckForDoubleBullseye()
