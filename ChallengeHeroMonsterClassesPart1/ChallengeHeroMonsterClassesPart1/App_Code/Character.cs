@@ -11,7 +11,7 @@ namespace HeroMonster
         public int InitiativeRoll { get; set; }
         public int Initiative { get; set; }
 
-        internal void ApplyDamage(int damage)
+        public void ApplyDamage(int damage)
         {
             this.Health -= damage;
             if (this.Health < 0) Health = 0;

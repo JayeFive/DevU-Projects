@@ -7,17 +7,16 @@ namespace HeroMonster
     {
         public GameMaster()
         {
-            DisplayLabelTextArgs = new Dictionary<String, String>();
-        }
-        public Dictionary<String, String> DisplayLabelTextArgs { get; set; }
-        List<Character> enemyList = new List<Character>();
-        List<Character> characterTurnOrder = new List<Character>();
-        Dice dice = new Dice();
-        Character activeCharacter;
-        Character activeTarget;
-        int activeCharacterTurnIndex = 0;
 
-        Character hero = new Character
+        }
+        public Character ActiveCharacter { get; set; }
+        public int ActiveCharacterTurnIndex { get; set; }
+        public Character ActiveTarget { get; set; }
+        public List<Character> characterTurnOrder = new List<Character>();
+        public List<Character> enemyList = new List<Character>();
+        Dice dice = new Dice();
+
+        public Character Hero = new Character
         {
             Name = "Johnny",
             Health = 100,
@@ -43,7 +42,7 @@ namespace HeroMonster
 
         public void PopulateCharacterTurnOrder()
         {
-            characterTurnOrder.Add(hero);
+            characterTurnOrder.Add(Hero);
             foreach (var enemy in enemyList) characterTurnOrder.Add(enemy);
         }
 
@@ -57,91 +56,7 @@ namespace HeroMonster
             characterTurnOrder.Sort((x, y) => y.Initiative.CompareTo(x.Initiative));
         }
 
-        public void EnterBattleLoop()
-        {
-            DetermineActiveCharacter();
-            if (activeCharacter == hero) HeroAttackSequence();
-            else HeroDefendSequence();
-        }
 
-        private void DetermineActiveCharacter()
-        {
-            if (activeCharacterTurnIndex == characterTurnOrder.Count) ResetCharacterTurnIndex();
-            SetActiveCharacterAndIterate();
-        }
-
-        private void SetActiveCharacterAndIterate()
-        {
-            activeCharacter = characterTurnOrder.ElementAt(activeCharacterTurnIndex);
-            activeCharacterTurnIndex++;
-        }
-
-        private void ResetCharacterTurnIndex()
-        {
-            activeCharacterTurnIndex = 0;
-        }
-
-        private void HeroAttackSequence()
-        {
-            var damage = RollForAttack();
-            SelectActiveTarget();
-            activeTarget.ApplyDamage(damage);
-            AddDisplayTextArg("damage", damage.ToString());
-            AddDisplayTextArg("attackerName", hero.Name);
-            AddDisplayTextArg("defenderName", activeTarget.Name);
-            AddDisplayTextArg("healthRemaining", activeTarget.Health.ToString());
-            UpdateDisplayLabel();
-            if (activeTarget.Health == 0) RemoveFromEnemyList();
-            if (CheckForRemainingEnemies()) EnterBattleLoop();
-            else return;
-        }
-
-        private void HeroDefendSequence()
-        {
-            hero.ApplyDamage(RollForAttack());
-            if (hero.Health == 0) return;
-            else EnterBattleLoop();
-        }
-
-        private void SelectActiveTarget()
-        {
-            activeTarget = enemyList.ElementAt(dice.Roll(0, enemyList.Count - 1));
-        }
-
-        public int RollForAttack()
-        {
-            return dice.RollForAttack(activeCharacter.DamageMax);
-
-        }
-
-        private void RemoveFromEnemyList()
-        {
-            enemyList.Remove(activeTarget);
-        }
-
-        private bool CheckForRemainingEnemies()
-        {
-            if (enemyList.Count != 0) return true;
-            else return false;
-        }
-
-        public void DisplayTextInitializer()
-        {
-            this.DisplayLabelTextArgs.Add("attackerName", "");
-            this.DisplayLabelTextArgs.Add("defenderName", "");
-            this.DisplayLabelTextArgs.Add("damage", "");
-            this.DisplayLabelTextArgs.Add("healthRemaining", "");
-        }
-
-        private void AddDisplayTextArg(string key, string value)
-        {
-            DisplayLabelTextArgs[key] = value;
-        }
-
-        public void UpdateDisplayLabel()
-        {
-            DisplayAttackResult();
-        }
     }
 }
 
