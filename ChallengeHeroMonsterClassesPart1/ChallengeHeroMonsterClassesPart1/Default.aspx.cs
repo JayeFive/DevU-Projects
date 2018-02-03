@@ -85,11 +85,13 @@ public partial class _Default : System.Web.UI.Page
     private void IncapacitationSequence()
     {
         DisplayCharacterIncapacitation();
-        if (gameMaster.ActiveCharacter != gameMaster.Hero)
-        {
-            RemoveFromEnemyList();
-            if (CheckForRemainingEnemies()) EnterBattleLoop();
-        }
+        if (gameMaster.ActiveTarget != gameMaster.Hero) NonPlayerCharacterDeathEvent();
+    }
+
+    private void NonPlayerCharacterDeathEvent()
+    {
+        RemoveFromEnemyList();
+        if (CheckForRemainingEnemies()) EnterBattleLoop();
     }
 
     private void RemoveFromEnemyList()
