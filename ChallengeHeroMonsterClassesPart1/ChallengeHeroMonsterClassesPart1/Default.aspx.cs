@@ -61,14 +61,8 @@ public partial class _Default : System.Web.UI.Page
     {
         var damage = RollForAttack();
         ApplyDamageAndDisplayResults(damage);
-        if (gameMaster.ActiveTarget.Health == 0)
-        {
-            DisplayCharacterIncapacitation();
-            if (gameMaster.ActiveCharacter != gameMaster.Hero) RemoveFromEnemyList();
-            else return;
-        }
-        if (CheckForRemainingEnemies()) EnterBattleLoop();
-        else return;
+        if (gameMaster.ActiveTarget.Health == 0) IncapacitationSequence();
+        else EnterBattleLoop();
     }
 
     private void SelectActiveTarget()
@@ -90,7 +84,12 @@ public partial class _Default : System.Web.UI.Page
 
     private void IncapacitationSequence()
     {
-
+        DisplayCharacterIncapacitation();
+        if (gameMaster.ActiveCharacter != gameMaster.Hero)
+        {
+            RemoveFromEnemyList();
+            if (CheckForRemainingEnemies()) EnterBattleLoop();
+        }
     }
 
     private void RemoveFromEnemyList()
