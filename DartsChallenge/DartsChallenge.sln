@@ -25,13 +25,22 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "DartsChallenge", "DartsChal
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Darts", "ClassLibrary1\Darts.csproj", "{8E4369C6-0CC4-460C-8D37-5A44FE65A066}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FD98D77A-77CD-4B7C-BED9-636D928A6D7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FD98D77A-77CD-4B7C-BED9-636D928A6D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD98D77A-77CD-4B7C-BED9-636D928A6D7D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD98D77A-77CD-4B7C-BED9-636D928A6D7D}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{8E4369C6-0CC4-460C-8D37-5A44FE65A066}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E4369C6-0CC4-460C-8D37-5A44FE65A066}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E4369C6-0CC4-460C-8D37-5A44FE65A066}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E4369C6-0CC4-460C-8D37-5A44FE65A066}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
