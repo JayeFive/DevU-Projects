@@ -32,11 +32,19 @@ public partial class _Default : System.Web.UI.Page
         EnterBattleLoop();
     }
 
+    //public void EnterBattleLoop()
+    //{
+    //    DetermineActiveCharacter();
+    //    if (gameMaster.ActiveCharacter == gameMaster.Hero) HeroAttackSequence();
+    //    else HeroDefendSequence();
+    //}
+
     public void EnterBattleLoop()
     {
         DetermineActiveCharacter();
-        if (gameMaster.ActiveCharacter == gameMaster.Hero) HeroAttackSequence();
-        else HeroDefendSequence();
+        if (gameMaster.ActiveCharacter == gameMaster.Hero) SelectActiveTarget();
+        else gameMaster.ActiveTarget = gameMaster.Hero;
+        BattleSequence();
     }
 
     private void DetermineActiveCharacter()
@@ -56,36 +64,20 @@ public partial class _Default : System.Web.UI.Page
         gameMaster.ActiveCharacterTurnIndex = 0;
     }
 
-    private void HeroAttackSequence()
+    private void BattleSequence()
     {
         var damage = RollForAttack();
-        SelectActiveTarget();
         gameMaster.ActiveTarget.ApplyDamage(damage);
         AddDisplayTextArgs(damage);
         UpdateDisplayLabel();
         if (gameMaster.ActiveTarget.Health == 0)
         {
             DisplayCharacterIncapacitation();
-            RemoveFromEnemyList();
+            if (gameMaster.ActiveCharacter != gameMaster.Hero) RemoveFromEnemyList();
+            else return;
         }
         if (CheckForRemainingEnemies()) EnterBattleLoop();
         else return;
-    }
-
-    private void HeroDefendSequence()
-    {
-        var damage = RollForAttack();
-        gameMaster.ActiveTarget = gameMaster.Hero;
-        gameMaster.Hero.ApplyDamage(damage);
-        AddDisplayTextArgs(damage);
-        UpdateDisplayLabel();
-        if (gameMaster.Hero.Health == 0)
-        {
-            DisplayCharacterIncapacitation();
-            return;
-        }
-
-        else EnterBattleLoop();
     }
 
     private void SelectActiveTarget()
