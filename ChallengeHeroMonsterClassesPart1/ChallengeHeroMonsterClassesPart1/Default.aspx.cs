@@ -39,8 +39,8 @@ public partial class _Default : System.Web.UI.Page
     public void EnterBattleLoop()
     {
         DetermineActiveCharacter();
-        if (gameMaster.ActiveCharacter == gameMaster.Hero) heroAttackSequence();
-        else heroDefendSequence();
+        if (gameMaster.ActiveCharacter == gameMaster.Hero) HeroAttackSequence();
+        else HeroDefendSequence();
     }
 
     private void DetermineActiveCharacter()
@@ -60,7 +60,7 @@ public partial class _Default : System.Web.UI.Page
         gameMaster.ActiveCharacterTurnIndex = 0;
     }
 
-    private void heroAttackSequence()
+    private void HeroAttackSequence()
     {
         var damage = RollForAttack();
         SelectActiveTarget();
@@ -75,9 +75,15 @@ public partial class _Default : System.Web.UI.Page
         else return;
     }
 
-    private void heroDefendSequence()
+    private void HeroDefendSequence()
     {
-        gameMaster.Hero.ApplyDamage(RollForAttack());
+        var damage = RollForAttack();
+        gameMaster.Hero.ApplyDamage(damage);
+        AddDisplayTextArg("damage", damage.ToString());
+        AddDisplayTextArg("attackerName", gameMaster.ActiveCharacter.Name);
+        AddDisplayTextArg("defenderName", gameMaster.Hero.Name);
+        AddDisplayTextArg("healthRemaining", gameMaster.Hero.Health.ToString());
+        UpdateDisplayLabel();
         if (gameMaster.Hero.Health == 0) return;
         else EnterBattleLoop();
     }
@@ -115,13 +121,13 @@ public partial class _Default : System.Web.UI.Page
     }
 
     public void DisplayAttackResult()
-        {
-            ResultLabel.Text += String.Format("<p>{0} attacks {1} for {2} damage! {1} has {3} health left.</p>",
-                DisplayLabelTextArgs.TryGetValue("attackerName", out string attackerName),
-                DisplayLabelTextArgs.TryGetValue("defenderName", out string defenderName),
-                DisplayLabelTextArgs.TryGetValue("damage", out string damage),
-                DisplayLabelTextArgs.TryGetValue("healthRemaining", out string healthRemaining));
-        }
+    {
+        ResultLabel.Text += String.Format("<p>{0} attacks {1} for {2} damage! {1} has {3} health left.</p>",
+            DisplayLabelTextArgs["attackerName"],
+            DisplayLabelTextArgs["defenderName"],
+            DisplayLabelTextArgs["damage"],
+            DisplayLabelTextArgs["healthRemaining"]);
+    }
 
 
 
