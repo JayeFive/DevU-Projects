@@ -61,10 +61,7 @@ public partial class _Default : System.Web.UI.Page
         var damage = RollForAttack();
         SelectActiveTarget();
         gameMaster.ActiveTarget.ApplyDamage(damage);
-        AddDisplayTextArg("damage", damage.ToString());
-        AddDisplayTextArg("attackerName", gameMaster.Hero.Name);
-        AddDisplayTextArg("defenderName", gameMaster.ActiveTarget.Name);
-        AddDisplayTextArg("healthRemaining", gameMaster.ActiveTarget.Health.ToString());
+        AddDisplayTextArgs(damage);
         UpdateDisplayLabel();
         if (gameMaster.ActiveTarget.Health == 0)
         {
@@ -80,10 +77,7 @@ public partial class _Default : System.Web.UI.Page
         var damage = RollForAttack();
         gameMaster.ActiveTarget = gameMaster.Hero;
         gameMaster.Hero.ApplyDamage(damage);
-        AddDisplayTextArg("damage", damage.ToString());
-        AddDisplayTextArg("attackerName", gameMaster.ActiveCharacter.Name);
-        AddDisplayTextArg("defenderName", gameMaster.Hero.Name);
-        AddDisplayTextArg("healthRemaining", gameMaster.Hero.Health.ToString());
+        AddDisplayTextArgs(damage);
         UpdateDisplayLabel();
         if (gameMaster.Hero.Health == 0)
         {
@@ -115,9 +109,12 @@ public partial class _Default : System.Web.UI.Page
         else return false;
     }
 
-    private void AddDisplayTextArg(string key, string value)
+    private void AddDisplayTextArgs(int damage)
     {
-        DisplayLabelTextArgs[key] = value;
+        DisplayLabelTextArgs["attackerName"] = gameMaster.ActiveCharacter.Name;
+        DisplayLabelTextArgs["defenderName"] = gameMaster.ActiveTarget.Name;
+        DisplayLabelTextArgs["damage"] = damage.ToString();
+        DisplayLabelTextArgs["healthRemaining"] = gameMaster.ActiveTarget.Health.ToString();
     }
 
     public void UpdateDisplayLabel()
