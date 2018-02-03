@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using HeroMonster;
 
-
-
 public partial class _Default : System.Web.UI.Page 
 {
+    public _Default()
+    {
+        DisplayLabelTextArgs.Add("attackerName", "");
+        DisplayLabelTextArgs.Add("defenderName", "");
+        DisplayLabelTextArgs.Add("damage", "");
+        DisplayLabelTextArgs.Add("healthRemaining", "");
+    }
     const int numEnemiesToSpawn = 1;     // To be used later to spawn multiple enemies
     GameMaster gameMaster = new GameMaster();
     Dice dice = new Dice();
@@ -15,25 +20,15 @@ public partial class _Default : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         MainGameSequence();
-        gameMaster.ActiveCharacterTurnIndex = 0;
     }
 
     private void MainGameSequence()
     {
-        DisplayTextInitializer();
         gameMaster.CreateEnemyList(numEnemiesToSpawn);
         gameMaster.PopulateCharacterTurnOrder();
         gameMaster.RollForInitiative();
         gameMaster.DetermineCharacterTurnOrder();
         EnterBattleLoop();
-    }
-
-    public void DisplayTextInitializer()
-    {
-        DisplayLabelTextArgs.Add("attackerName", "");
-        DisplayLabelTextArgs.Add("defenderName", "");
-        DisplayLabelTextArgs.Add("damage", "");
-        DisplayLabelTextArgs.Add("healthRemaining", "");
     }
 
     public void EnterBattleLoop()
@@ -70,7 +65,12 @@ public partial class _Default : System.Web.UI.Page
         AddDisplayTextArg("defenderName", gameMaster.ActiveTarget.Name);
         AddDisplayTextArg("healthRemaining", gameMaster.ActiveTarget.Health.ToString());
         UpdateDisplayLabel();
-        if (gameMaster.ActiveTarget.Health == 0) RemoveFromEnemyList();
+        if (gameMaster.ActiveTarget.Health == 0)
+        {
+            RemoveFromEnemyList();
+            DisplayCharacterIncapacitation(gameMaster.)
+        }
+
         if (CheckForRemainingEnemies()) EnterBattleLoop();
         else return;
     }
@@ -96,7 +96,6 @@ public partial class _Default : System.Web.UI.Page
     public int RollForAttack()
     {
         return dice.RollForAttack(gameMaster.ActiveCharacter.DamageMax);
-
     }
 
     private void RemoveFromEnemyList()
@@ -132,17 +131,17 @@ public partial class _Default : System.Web.UI.Page
 
 
 
-        //private void DisplayExtraAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
-        //{
-        //    ResultLabel.Text += String.Format("<p>{0} gains an extra attack for {2} damage! {1} has {3} health left.</p>",
-        //        attackerName, defenderName, damage, health);
-        //}
+    //private void DisplayExtraAttackSequenceStats(string attackerName, string defenderName, int damage, int health)
+    //{
+    //    ResultLabel.Text += String.Format("<p>{0} gains an extra attack for {2} damage! {1} has {3} health left.</p>",
+    //        attackerName, defenderName, damage, health);
+    //}
 
-        //public void DisplayCharacterIncapacitation(string defenderName)
-        //{
-        //    ResultLabel.Text = String.Format("<p>{0} has been slain!</p>", defenderName);
-        //}
+    public void DisplayCharacterIncapacitation(string defenderName)
+    {
+        ResultLabel.Text = String.Format("<p>{0} has been slain!</p>", defenderName);
     }
+}
 
 
 

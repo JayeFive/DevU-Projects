@@ -7,8 +7,9 @@ namespace HeroMonster
     {
         public GameMaster()
         {
-
+            ActiveCharacterTurnIndex = 0;
         }
+
         public Character ActiveCharacter { get; set; }
         public int ActiveCharacterTurnIndex { get; set; }
         public Character ActiveTarget { get; set; }
@@ -55,8 +56,6 @@ namespace HeroMonster
         {
             characterTurnOrder.Sort((x, y) => y.Initiative.CompareTo(x.Initiative));
         }
-
-
     }
 }
 

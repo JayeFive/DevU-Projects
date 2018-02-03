@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HeroMonster 
+﻿namespace HeroMonster 
 {
     public class Character
     {
