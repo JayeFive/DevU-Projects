@@ -32,13 +32,6 @@ public partial class _Default : System.Web.UI.Page
         EnterBattleLoop();
     }
 
-    //public void EnterBattleLoop()
-    //{
-    //    DetermineActiveCharacter();
-    //    if (gameMaster.ActiveCharacter == gameMaster.Hero) HeroAttackSequence();
-    //    else HeroDefendSequence();
-    //}
-
     public void EnterBattleLoop()
     {
         DetermineActiveCharacter();
@@ -67,9 +60,7 @@ public partial class _Default : System.Web.UI.Page
     private void BattleSequence()
     {
         var damage = RollForAttack();
-        gameMaster.ActiveTarget.ApplyDamage(damage);
-        AddDisplayTextArgs(damage);
-        UpdateDisplayLabel();
+        ApplyDamageAndDisplayResults(damage);
         if (gameMaster.ActiveTarget.Health == 0)
         {
             DisplayCharacterIncapacitation();
@@ -88,6 +79,18 @@ public partial class _Default : System.Web.UI.Page
     public int RollForAttack()
     {
         return dice.RollForAttack(gameMaster.ActiveCharacter.DamageMax);
+    }
+
+    private void ApplyDamageAndDisplayResults(int damage)
+    {
+        gameMaster.ActiveTarget.ApplyDamage(damage);
+        AddDisplayTextArgs(damage);
+        UpdateDisplayLabel();
+    }
+
+    private void IncapacitationSequence()
+    {
+
     }
 
     private void RemoveFromEnemyList()
