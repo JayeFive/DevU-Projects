@@ -39,20 +39,16 @@ public partial class _Default : System.Web.UI.Page
         ActivePlayer = PlayerOne;
     }
 
-    private void SwitchActivePlayer()
-    {
-        if (ActivePlayer == PlayerOne) ActivePlayer = PlayerTwo;
-        else ActivePlayer = PlayerOne;
-    }
 
     private void PlayerTurn()
     {
         Dart dart = new Dart();
-        dart.Throw();
 
         for (var i = 1; i < NumberOfThrowsPerTurn; i++)
         {
+            dart.Throw();
             int throwScore = GetThrowScore(dart);
+
             if ((ActivePlayer.Score + throwScore) > 301) break;
             else if ((ActivePlayer.Score + throwScore) == 301)
             {
@@ -75,12 +71,16 @@ public partial class _Default : System.Web.UI.Page
         else return dart.NumberLandedOn;
     }
 
-
-
     private void EndTurn()
     {
         SwitchActivePlayer();
         MainLoop();
+    }
+
+    private void SwitchActivePlayer()
+    {
+        if (ActivePlayer == PlayerOne) ActivePlayer = PlayerTwo;
+        else ActivePlayer = PlayerOne;
     }
 
     private void DisplayWinResults()

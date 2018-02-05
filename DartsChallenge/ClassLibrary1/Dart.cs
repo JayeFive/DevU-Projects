@@ -25,13 +25,11 @@ namespace Darts
 
         Random random = new Random();
 
-        public int Throw()
+        public void Throw()
         {
-            int numberLandedOn = random.Next(0, 20);
+            NumberLandedOn = random.Next(0, 20);
             if (NumberLandedOn == 0) IsSingleOrDoubleBullseye();
             else CheckForRing();
-
-            return numberLandedOn;
         }
 
         internal void IsSingleOrDoubleBullseye()
