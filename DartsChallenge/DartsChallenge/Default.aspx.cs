@@ -43,7 +43,7 @@ public partial class _Default : System.Web.UI.Page
     private void PlayerTurn()
     {
 
-        for (var i = 1; i < NumberOfThrowsPerTurn; i++)
+        for (var i = 0; i < NumberOfThrowsPerTurn; i++)
         {
             Dart dart = new Dart();
             dart.Throw();
