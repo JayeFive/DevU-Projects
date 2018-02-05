@@ -52,7 +52,7 @@ public partial class _Default : System.Web.UI.Page
             dart.Throw();
             int throwScore = GetThrowScore(dart);
 
-            if ((ActivePlayer.Score + throwScore) > 301) break;
+            if ((ActivePlayer.Score + throwScore) > 301) continue;
             else if ((ActivePlayer.Score + throwScore) == 301)
             {
                 ActivePlayer.Score += throwScore;
