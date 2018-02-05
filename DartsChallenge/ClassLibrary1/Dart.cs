@@ -48,5 +48,13 @@ namespace Darts
             if (random.Next(0, 1) == 0) IsOuterRing = true;
             else IsInnerRing = true;
         }
+
+        public void ResetDart()
+        {
+            IsBullseye = false;
+            IsDoubleBullseye = false;
+            IsInnerRing = false;
+            IsOuterRing = false;
+        }
     }
 }

@@ -42,21 +42,22 @@ public partial class _Default : System.Web.UI.Page
 
     private void PlayerTurn()
     {
+        Dart dart = new Dart();
 
         for (var i = 0; i < NumberOfThrowsPerTurn; i++)
         {
-            Dart dart = new Dart();
             dart.Throw();
             int throwScore = GetThrowScore(dart);
 
             if ((ActivePlayer.Score + throwScore) > 301) break;
             else if ((ActivePlayer.Score + throwScore) == 301)
             {
+                ActivePlayer.Score += throwScore;
                 DisplayWinResults();
                 return;
             }
             else ActivePlayer.Score += throwScore;
-            dart = null;
+            dart.ResetDart();
         }
 
         EndTurn();
@@ -86,7 +87,11 @@ public partial class _Default : System.Web.UI.Page
 
     private void DisplayWinResults()
     {
-        ResultLabel.Text = String.Format("{0} wins with a score of {1}!", ActivePlayer, ActivePlayer.Score);
+        ResultLabel.Text = String.Format(
+            "Player One Score: {0} /r/n" +
+            "Player Two Score: {1} /r/n" +
+            "{2} wins!", 
+            PlayerOne.Score.ToString(), PlayerTwo.Score.ToString(), ActivePlayer.ToString());
     }
   
 }
