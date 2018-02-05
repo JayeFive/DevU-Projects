@@ -6,7 +6,9 @@ public partial class _Default : System.Web.UI.Page
     Player PlayerOne = new Player();
     Player PlayerTwo = new Player();
     Player ActivePlayer;
+    Dart dart = new Dart();
     const int NumberOfThrowsPerTurn = 3;
+    
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -15,6 +17,8 @@ public partial class _Default : System.Web.UI.Page
 
     protected void PlayDartsButton_Click(object sender, EventArgs e)
     {
+        PlayerOne.Name = "Player One";
+        PlayerTwo.Name = "Player Two";
         SetPlayerOneAsActive();
         MainLoop();
     }
@@ -42,7 +46,6 @@ public partial class _Default : System.Web.UI.Page
 
     private void PlayerTurn()
     {
-        Dart dart = new Dart();
 
         for (var i = 0; i < NumberOfThrowsPerTurn; i++)
         {
@@ -88,10 +91,10 @@ public partial class _Default : System.Web.UI.Page
     private void DisplayWinResults()
     {
         ResultLabel.Text = String.Format(
-            "Player One Score: {0} /r/n" +
-            "Player Two Score: {1} /r/n" +
+            "<p>Player One Score: {0}</p>" +
+            "<p>Player Two Score: {1}</p>" +
             "{2} wins!", 
-            PlayerOne.Score.ToString(), PlayerTwo.Score.ToString(), ActivePlayer.ToString());
+            PlayerOne.Score.ToString(), PlayerTwo.Score.ToString(), ActivePlayer.Name);
     }
   
 }
@@ -101,6 +104,7 @@ public partial class _Default : System.Web.UI.Page
 
 class Player
 {
+    public string Name { get; set; }
     public int Score { get; set; }
 
     public Player()
