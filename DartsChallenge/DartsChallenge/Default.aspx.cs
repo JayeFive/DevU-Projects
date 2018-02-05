@@ -55,7 +55,16 @@ public partial class _Default : System.Web.UI.Page
         else if (dart.IsInnerRing) throwScore = dart.NumberLandedOn * 3;
         else throwScore = dart.NumberLandedOn;
 
+        if ((ActivePlayer.Score + throwScore) > 301) EndTurn();
+        else if ((ActivePlayer.Score + throwScore) == 301) /* Game over, active player wins */ ;
+        else ActivePlayer.Score += throwScore;
+        
+    }
 
+    private void EndTurn()
+    {
+        SwitchActivePlayer();
+        MainLoop();
     }
 
   
