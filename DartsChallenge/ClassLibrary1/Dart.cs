@@ -10,7 +10,6 @@ namespace Darts
     {
         public Dart()
         {
-            NumberLandedOn = 0;
             IsOuterRing = false;
             IsInnerRing = false;
             IsBullseye = false;
@@ -26,11 +25,13 @@ namespace Darts
 
         Random random = new Random();
 
-        public void Throw()
+        public int Throw()
         {
-            NumberLandedOn = random.Next(0, 20);
+            int numberLandedOn = random.Next(0, 20);
             if (NumberLandedOn == 0) IsSingleOrDoubleBullseye();
             else CheckForRing();
+
+            return numberLandedOn;
         }
 
         internal void IsSingleOrDoubleBullseye()
