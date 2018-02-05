@@ -54,7 +54,11 @@ public partial class _Default : System.Web.UI.Page
         {
             int throwScore = GetThrowScore(dart);
             if ((ActivePlayer.Score + throwScore) > 301) break;
-            else if ((ActivePlayer.Score + throwScore) == 301) /* Game over, active player wins */ ;
+            else if ((ActivePlayer.Score + throwScore) == 301)
+            {
+                DisplayWinResults();
+                return;
+            }
             else ActivePlayer.Score += throwScore;
         }
 
@@ -79,6 +83,10 @@ public partial class _Default : System.Web.UI.Page
         MainLoop();
     }
 
+    private void DisplayWinResults()
+    {
+        ResultLabel.Text = String.Format("{0} wins with a score of {1}!", ActivePlayer, ActivePlayer.Score);
+    }
   
 }
 
