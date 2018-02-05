@@ -52,7 +52,11 @@ public partial class _Default : System.Web.UI.Page
             dart.Throw();
             int throwScore = GetThrowScore(dart);
 
-            if ((ActivePlayer.Score + throwScore) > 301) continue;
+            if ((ActivePlayer.Score + throwScore) > 301)
+            {
+                dart.ResetDart();
+                continue;
+            }
             else if ((ActivePlayer.Score + throwScore) == 301)
             {
                 ActivePlayer.Score += throwScore;
@@ -60,6 +64,7 @@ public partial class _Default : System.Web.UI.Page
                 return;
             }
             else ActivePlayer.Score += throwScore;
+
             dart.ResetDart();
         }
 
