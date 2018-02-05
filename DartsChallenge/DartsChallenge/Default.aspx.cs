@@ -20,22 +20,7 @@ public partial class _Default : System.Web.UI.Page
         PlayerOne.Name = "Player One";
         PlayerTwo.Name = "Player Two";
         SetPlayerOneAsActive();
-        MainLoop();
-    }
-
-    private void MainLoop()
-    {
-        // Begin player turn loop
         PlayerTurn();
-
-        // Player throws 3 times
-        // Each time the score first determined 
-        // Check to see if total score > 301
-            // if so, players turn is over
-        // Check to see if total score == 301
-            // if so, player wins
-        // Add throw to total score
-        //Switch active player
     }
 
     private void SetPlayerOneAsActive()
@@ -43,10 +28,8 @@ public partial class _Default : System.Web.UI.Page
         ActivePlayer = PlayerOne;
     }
 
-
     private void PlayerTurn()
     {
-
         for (var i = 0; i < NumberOfThrowsPerTurn; i++)
         {
             dart.Throw();
@@ -84,7 +67,7 @@ public partial class _Default : System.Web.UI.Page
     private void EndTurn()
     {
         SwitchActivePlayer();
-        MainLoop();
+        PlayerTurn();
     }
 
     private void SwitchActivePlayer()
