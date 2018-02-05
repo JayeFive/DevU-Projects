@@ -56,6 +56,7 @@ public partial class _Default : System.Web.UI.Page
                 return;
             }
             else ActivePlayer.Score += throwScore;
+            dart = null;
         }
 
         EndTurn();
