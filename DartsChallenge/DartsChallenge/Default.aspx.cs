@@ -47,18 +47,23 @@ public partial class _Default : System.Web.UI.Page
     private void PlayerTurn()
     {
         Dart dart = new Dart();
-        int throwScore = 0;
         dart.Throw();
-        if (dart.IsBullseye) throwScore = 25;
-        else if (dart.IsDoubleBullseye) throwScore = 50;
-        else if (dart.IsOuterRing) throwScore = dart.NumberLandedOn * 2;
-        else if (dart.IsInnerRing) throwScore = dart.NumberLandedOn * 3;
-        else throwScore = dart.NumberLandedOn;
+        int throwScore = GetThrowScore(dart);
+
 
         if ((ActivePlayer.Score + throwScore) > 301) EndTurn();
         else if ((ActivePlayer.Score + throwScore) == 301) /* Game over, active player wins */ ;
         else ActivePlayer.Score += throwScore;
         
+    }
+
+    private int GetThrowScore(Dart dart)
+    {
+        if (dart.IsBullseye) return 25;
+        else if (dart.IsDoubleBullseye) return 50;
+        else if (dart.IsOuterRing) return (dart.NumberLandedOn * 2);
+        else if (dart.IsInnerRing) return (dart.NumberLandedOn * 3);
+        else return dart.NumberLandedOn;
     }
 
     private void EndTurn()
