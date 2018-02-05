@@ -42,10 +42,10 @@ public partial class _Default : System.Web.UI.Page
 
     private void PlayerTurn()
     {
-        Dart dart = new Dart();
 
         for (var i = 1; i < NumberOfThrowsPerTurn; i++)
         {
+            Dart dart = new Dart();
             dart.Throw();
             int throwScore = GetThrowScore(dart);
 
