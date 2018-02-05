@@ -6,6 +6,7 @@ public partial class _Default : System.Web.UI.Page
     Player PlayerOne = new Player();
     Player PlayerTwo = new Player();
     Player ActivePlayer;
+    const int NumberOfThrowsPerTurn = 3;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -48,12 +49,16 @@ public partial class _Default : System.Web.UI.Page
     {
         Dart dart = new Dart();
         dart.Throw();
-        int throwScore = GetThrowScore(dart);
 
+        for (var i = 1; i < NumberOfThrowsPerTurn; i++)
+        {
+            int throwScore = GetThrowScore(dart);
+            if ((ActivePlayer.Score + throwScore) > 301) break;
+            else if ((ActivePlayer.Score + throwScore) == 301) /* Game over, active player wins */ ;
+            else ActivePlayer.Score += throwScore;
+        }
 
-        if ((ActivePlayer.Score + throwScore) > 301) EndTurn();
-        else if ((ActivePlayer.Score + throwScore) == 301) /* Game over, active player wins */ ;
-        else ActivePlayer.Score += throwScore;
+        EndTurn();
         
     }
 
@@ -65,6 +70,8 @@ public partial class _Default : System.Web.UI.Page
         else if (dart.IsInnerRing) return (dart.NumberLandedOn * 3);
         else return dart.NumberLandedOn;
     }
+
+
 
     private void EndTurn()
     {
