@@ -3,8 +3,8 @@ using Darts;
 
 public partial class _Default : System.Web.UI.Page
 {
-    Player PlayerOne = new Player();
-    Player PlayerTwo = new Player();
+    Player PlayerOne = new Player() { Name = "Player One" };
+    Player PlayerTwo = new Player() { Name = "Player Two" };
     Player ActivePlayer;
     Dart dart = new Dart();
     const int NumberOfThrowsPerTurn = 3;
@@ -17,15 +17,8 @@ public partial class _Default : System.Web.UI.Page
 
     protected void PlayDartsButton_Click(object sender, EventArgs e)
     {
-        PlayerOne.Name = "Player One";
-        PlayerTwo.Name = "Player Two";
-        SetPlayerOneAsActive();
-        PlayerTurn();
-    }
-
-    private void SetPlayerOneAsActive()
-    {
         ActivePlayer = PlayerOne;
+        PlayerTurn();
     }
 
     private void PlayerTurn()
