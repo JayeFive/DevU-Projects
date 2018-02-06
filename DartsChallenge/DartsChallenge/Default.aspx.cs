@@ -45,7 +45,6 @@ public partial class _Default : System.Web.UI.Page
         }
 
         EndTurn();
-        
     }
 
     private int GetThrowScore(Dart dart)
@@ -77,7 +76,6 @@ public partial class _Default : System.Web.UI.Page
             "{2} wins!", 
             PlayerOne.Score.ToString(), PlayerTwo.Score.ToString(), ActivePlayer.Name);
     }
-  
 }
 
     
