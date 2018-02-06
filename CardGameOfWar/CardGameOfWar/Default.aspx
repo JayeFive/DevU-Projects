@@ -9,6 +9,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            <asp:Button ID="playButton" runat="server" OnClick="playButton_Click" Text="Play" />
         </div>
     </form>
 </body>
