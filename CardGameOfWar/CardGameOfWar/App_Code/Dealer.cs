@@ -22,7 +22,8 @@ namespace GameOfWar
 
         public Card DealCard(DeckOfCards deck)
         {
-            return null;
+            Card cardToBeDealt = deck.StandardDeck[random.Next(0, deck.StandardDeck.Count)];
+            return cardToBeDealt;
         }
     }
 }
