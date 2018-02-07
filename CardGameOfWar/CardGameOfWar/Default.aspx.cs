@@ -17,10 +17,27 @@ public partial class _Default : System.Web.UI.Page
     protected void playButton_Click(object sender, EventArgs e)
     {
         dealer.ShuffleCards(deck);
+        DealCards();
 
-        foreach(var card in deck.StandardDeck)
+        resultLabel.Text += "<h2>Player One's Cards: </h2> <br />";
+        foreach(var card in playerOne.PlayerHand)
         {
             resultLabel.Text += String.Format("<p>{0} of {1}</p>", card.CardNumber, card.Suit);
+        }
+
+        resultLabel.Text += "<h2>Player Two's Cards: </h2> <br />";
+        foreach (var card in playerTwo.PlayerHand)
+        {
+            resultLabel.Text += String.Format("<p>{0} of {1}</p>", card.CardNumber, card.Suit);
+        }
+    }
+
+    private void DealCards()
+    {
+        foreach(var card in deck.StandardDeck)
+        {
+            if (playerOne.PlayerHand.Count == playerTwo.PlayerHand.Count) playerOne.PlayerHand.Add(dealer.DealCard(deck));
+            else playerTwo.PlayerHand.Add(dealer.DealCard(deck));
         }
     }
 }

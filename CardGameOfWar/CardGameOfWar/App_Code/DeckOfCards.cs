@@ -6,7 +6,7 @@ namespace GameOfWar
     {
         public List<Card> StandardDeck { get; set; }
 
-        public DeckOfCards()
+        public DeckOfCards()    // Constructor generates the deck
         {
             StandardDeck = new List<Card>();
 
