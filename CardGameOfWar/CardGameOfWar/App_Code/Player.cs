@@ -2,7 +2,7 @@
 
 namespace GameOfWar
 {
-    class Player
+    public class Player
     {
         public string Name { get; set; }
         public List<Card> PlayerHand { get; set; }

@@ -5,10 +5,13 @@ using GameOfWar;
 public partial class _Default : System.Web.UI.Page
 {
     DeckOfCards deck = new DeckOfCards();
+    Dealer dealer = new Dealer();
+    Player playerOne = new Player();
+    Player playerTwo = new Player();
+
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
     }
 
     protected void playButton_Click(object sender, EventArgs e)
