@@ -7,17 +7,27 @@ namespace GameOfWar
     {
         Random random = new Random();
 
-
-        public void ShuffleCards<T>(this IList<T> list) 
+        public void ShuffleCards(DeckOfCards deck)
         {
-            int n = list.Count;  
-            while (n > 1) {  
-                n--;  
-                int k = random.Next(n + 1);  
-                T value = list[k];  
-                list[k] = list[n];  
-                list[n] = value;  
-            }  
+            List<Card> tempStack = new List<Card>();
+
+            while(deck.StandardDeck.Count > 0)
+            {
+                Card tempCard = new Card();
+
+                tempCard = (deck.StandardDeck[random.Next(0, deck.StandardDeck.Count)]);
+                deck.StandardDeck.Remove(tempCard);
+                tempStack.Add(tempCard);
+            }
+
+            deck.StandardDeck = tempStack;
+
+            //foreach (var card in tempStack)
+            //{
+            //    deck.StandardDeck.Add(card);
+            //    tempStack.Remove(card);
+            //}
+            
         }
 
 

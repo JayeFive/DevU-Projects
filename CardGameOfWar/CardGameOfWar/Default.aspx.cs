@@ -16,6 +16,8 @@ public partial class _Default : System.Web.UI.Page
 
     protected void playButton_Click(object sender, EventArgs e)
     {
+        dealer.ShuffleCards(deck);
+
         foreach(var card in deck.StandardDeck)
         {
             resultLabel.Text += String.Format("<p>{0} of {1}</p>", card.CardNumber, card.Suit);
