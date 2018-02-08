@@ -8,6 +8,7 @@ public partial class _Default : System.Web.UI.Page
     Dealer dealer = new Dealer();
     Player playerOne = new Player();
     Player playerTwo = new Player();
+    Queue<Card> cardsOnTable = new Queue<Card>();
     const int numberOfRoundsToPlay = 10;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -23,17 +24,17 @@ public partial class _Default : System.Web.UI.Page
             BeginRound();
         }
 
-        resultLabel.Text += "<h2>Player One's Cards: </h2> <br />";
-        foreach(var card in playerOne.PlayerHand)
-        {
-            resultLabel.Text += String.Format("<p>{0} of {1}</p>", card.CardNumber, card.Suit);
-        }
+        //resultLabel.Text += "<h2>Player One's Cards: </h2> <br />";
+        //foreach(var card in playerOne.PlayerHand)
+        //{
+        //    resultLabel.Text += String.Format("<p>{0} of {1}</p>", card.CardNumber, card.Suit);
+        //}
 
-        resultLabel.Text += "<h2>Player Two's Cards: </h2> <br />";
-        foreach (var card in playerTwo.PlayerHand)
-        {
-            resultLabel.Text += String.Format("<p>{0} of {1}</p>", card.CardNumber, card.Suit);
-        }
+        //resultLabel.Text += "<h2>Player Two's Cards: </h2> <br />";
+        //foreach (var card in playerTwo.PlayerHand)
+        //{
+        //    resultLabel.Text += String.Format("<p>{0} of {1}</p>", card.CardNumber, card.Suit);
+        //}
     }
 
     private void dealCards()
@@ -52,6 +53,7 @@ public partial class _Default : System.Web.UI.Page
         {
             playerOne.PlayerHand.Enqueue(playerOneCard);
             playerOne.PlayerHand.Enqueue(PlayerTwoCard);
+            DisplayRound(new Card[] { playerOneCard, PlayerTwoCard });
             return playerOne;
         }
             // if tied, WAR
@@ -79,5 +81,17 @@ public partial class _Default : System.Web.UI.Page
         var playerTwoCard = playerTwo.PlayerHand.Dequeue();
         var winningPlayer = BeginRound();
         foreach (var card in cards) winningPlayer.PlayerHand.Enqueue(card);
+    }
+
+    private void awardCards(Player winningPlayer)
+    {
+        foreach (var card in cardsOnTable) winningPlayer.PlayerHand.Enqueue(card);
+    }
+
+    private void DisplayRound(Card[] cards)
+    {
+        resultLabel.Text += String.Format("Player One draws a {0}, Player Two Draws a {1}. ",
+            cards[0].CardNumber.ToString() + " of " + cards[0].Suit,
+            cards[1].CardNumber.ToString() + " of " + cards[1].Suit);
     }
 }

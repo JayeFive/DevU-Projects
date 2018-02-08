@@ -26,7 +26,7 @@ namespace GameOfWar
             {
                 foreach(var player in players)
                 {
-                    player.PlayerHand.Push(deck.StandardDeck[0]);
+                    player.PlayerHand.Enqueue(deck.StandardDeck[0]);
                     deck.StandardDeck.Remove(deck.StandardDeck[0]);
                 }
             }

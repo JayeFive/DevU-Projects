@@ -4,11 +4,11 @@ namespace GameOfWar
 {
     public class DeckOfCards
     {
-        public List<Card> StandardDeck { get; set; }
+        public Queue<Card> StandardDeck { get; set; }
 
         public DeckOfCards()    // Constructor generates the deck
         {
-            StandardDeck = new List<Card>();
+            StandardDeck = new Queue<Card>();
 
             const int lowestCardNumber = 2;
             const int numberPerSuit = 14;
@@ -18,7 +18,7 @@ namespace GameOfWar
             {
                 for (int j = lowestCardNumber; j <= numberPerSuit; j++)
                 {
-                    StandardDeck.Add(new Card { CardNumber = j, Suit = suits[i] });
+                    StandardDeck.Enqueue(new Card { CardNumber = j, Suit = suits[i] });
                 }
             }
         }
