@@ -20,8 +20,21 @@ namespace GameOfWar
             }
         }
 
+        public void DealEntireDeck(Player[] players, DeckOfCards deck)
+        {
+            while (deck.StandardDeck.Count > 0)
+            {
+                foreach(var player in players)
+                {
+                    player.PlayerHand.Add(deck.StandardDeck[0]);
+                    deck.StandardDeck.Remove(deck.StandardDeck[0]);
+                }
+            }
+        }
+
         public Card DealCard(DeckOfCards deck)
         {
+
             Card cardToBeDealt = deck.StandardDeck[random.Next(0, deck.StandardDeck.Count)];
             //deck.StandardDeck.Remove(cardToBeDealt);
             return cardToBeDealt;
