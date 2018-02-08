@@ -42,7 +42,7 @@ public partial class _Default : System.Web.UI.Page
         dealer.DealEntireDeck(new Player[] { playerOne, playerTwo }, deck);
     }
 
-    private void BeginRound()
+    private Player BeginRound()
     {
         // Each player draws top card from hand
         var playerOneCard = playerOne.PlayerHand.Dequeue();
@@ -50,11 +50,34 @@ public partial class _Default : System.Web.UI.Page
         // Evaluate winner
         if (playerOneCard.CardNumber > PlayerTwoCard.CardNumber)
         {
-
+            playerOne.PlayerHand.Enqueue(playerOneCard);
+            playerOne.PlayerHand.Enqueue(PlayerTwoCard);
+            return playerOne;
         }
-        
-
             // if tied, WAR
+        else if (playerOneCard.CardNumber == PlayerTwoCard.CardNumber) war(new List<Card> { playerOneCard, PlayerTwoCard });
             // else, winning card holder gets both cards which goto the bottom of the hand
+        else 
+        {
+            playerTwo.PlayerHand.Enqueue(playerOneCard);
+            playerTwo.PlayerHand.Enqueue(PlayerTwoCard);
+            return playerTwo;
+        }
+
+        return null;
+    }
+
+    private void war(List<Card> cards)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            cards.Add(playerOne.PlayerHand.Dequeue());
+            cards.Add(playerTwo.PlayerHand.Dequeue());
+        }
+
+        var playerOneCard = playerOne.PlayerHand.Dequeue();
+        var playerTwoCard = playerTwo.PlayerHand.Dequeue();
+        var winningPlayer = BeginRound();
+        foreach (var card in cards) winningPlayer.PlayerHand.Enqueue(card);
     }
 }
