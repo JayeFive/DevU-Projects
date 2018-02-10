@@ -8,7 +8,7 @@ public partial class _Default : System.Web.UI.Page
     Dealer dealer = new Dealer();
     Player playerOne = new Player() { Name = "Player One" };
     Player playerTwo = new Player() { Name = "Player Two" };
-    Queue<Card> cardsOnTable = new Queue<Card>();
+    List<Card> cardsOnTable = new List<Card>();
     const int numberOfRoundsToPlay = 10;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -48,8 +48,8 @@ public partial class _Default : System.Web.UI.Page
         // Each player draws top card from hand
         var playerOneCard = playerOne.PlayerHand.Dequeue();
         var playerTwoCard = playerTwo.PlayerHand.Dequeue();
-        cardsOnTable.Enqueue(playerOneCard);
-        cardsOnTable.Enqueue(playerTwoCard);
+        cardsOnTable.Add(playerOneCard);
+        cardsOnTable.Add(playerTwoCard);
 
         DisplayRound(new Card[] { playerOneCard, playerTwoCard });
         // Evaluate winner
@@ -71,6 +71,11 @@ public partial class _Default : System.Web.UI.Page
         return null;
     }
 
+    private void PlayersDrawTopCard ()
+    {
+
+    }
+
     private void war()
     {
         var playerOneCards = new Card[3];
@@ -79,9 +84,9 @@ public partial class _Default : System.Web.UI.Page
         for (int i = 0; i < 3; i++)
         {
             playerOneCards[i] = playerOne.PlayerHand.Dequeue();
-            cardsOnTable.Enqueue(playerOneCards[i]);
+            cardsOnTable.Add(playerOneCards[i]);
             playerTwoCards[i] = playerOne.PlayerHand.Dequeue();
-            cardsOnTable.Enqueue(playerOneCards[i]);
+            cardsOnTable.Add(playerOneCards[i]);
         }
 
         DisplayWar(playerOneCards, playerTwoCards);
