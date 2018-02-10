@@ -60,7 +60,7 @@ public partial class _Default : System.Web.UI.Page
             return playerOne;
         }
             // if tied, WAR
-        else if (playerOneCard.CardNumber == playerTwoCard.CardNumber) war(new List<Card> { playerOneCard, playerTwoCard });
+        else if (playerOneCard.CardNumber == playerTwoCard.CardNumber) war();
             // else, winning card holder gets both cards which goto the bottom of the hand
         else 
         {
@@ -71,13 +71,20 @@ public partial class _Default : System.Web.UI.Page
         return null;
     }
 
-    private void war(List<Card> cards)
+    private void war()
     {
+        var playerOneCards = new Card[3];
+        var playerTwoCards = new Card[3];
+
         for (int i = 0; i < 3; i++)
         {
-            cardsOnTable.Enqueue(playerOne.PlayerHand.Dequeue());
-            cardsOnTable.Enqueue(playerTwo.PlayerHand.Dequeue());
+            playerOneCards[i] = playerOne.PlayerHand.Dequeue();
+            cardsOnTable.Enqueue(playerOneCards[i]);
+            playerTwoCards[i] = playerOne.PlayerHand.Dequeue();
+            cardsOnTable.Enqueue(playerOneCards[i]);
         }
+
+        DisplayWar(playerOneCards, playerTwoCards);
     }
 
     private void awardCards(Player winningPlayer)
@@ -100,8 +107,12 @@ public partial class _Default : System.Web.UI.Page
         resultLabel.Text += String.Format("{0} has {1} cards. <br />", playerTwo.Name, playerTwo.PlayerHand.Count);
     }
 
-    private void DisplayWar()
+    private void DisplayWar(Card[] playerOneCards, Card[] playerTwoCards)
     {
-
+        resultLabel.Text += "<h3>WAR!!</h3> <br />";
+        resultLabel.Text += "Player One cards: <br />";
+        foreach (var card in playerOneCards) resultLabel.Text += String.Format("{0} of {1}<br />", card.CardNumber, card.Suit);
+        resultLabel.Text += "Player Two cards: <br />";
+        foreach (var card in playerTwoCards) resultLabel.Text += String.Format("{0} of {1}<br />", card.CardNumber, card.Suit);
     }
 }
