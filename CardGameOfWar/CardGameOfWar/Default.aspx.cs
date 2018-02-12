@@ -40,6 +40,7 @@ public partial class _Default : System.Web.UI.Page
     {
         // Each player draws top card from hand
         PlayersDrawTopCard();
+        AddCardsToPot();
 
         DisplayRound();
         // Evaluate winner
@@ -65,6 +66,12 @@ public partial class _Default : System.Web.UI.Page
     {
         playerOneCard = playerOne.PlayerHand.Dequeue();
         playerTwoCard = playerTwo.PlayerHand.Dequeue();
+    }
+
+    private void AddCardsToPot()
+    {
+        cardsOnTable.Push(playerOneCard);
+        cardsOnTable.Push(playerTwoCard);
     }
 
     private void war()
