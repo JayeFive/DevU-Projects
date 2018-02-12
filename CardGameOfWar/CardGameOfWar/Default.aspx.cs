@@ -8,13 +8,18 @@ public partial class _Default : System.Web.UI.Page
     Dealer dealer = new Dealer();
     Player playerOne = new Player() { Name = "Player One" };
     Player playerTwo = new Player() { Name = "Player Two" };
-    List<Card> cardsOnTable = new List<Card>();
+    Card playerOneCard = new Card();
+    Card playerTwoCard = new Card();
+
+
+    Stack<Card> cardsOnTable = new Stack<Card>();
     const int numberOfRoundsToPlay = 10;
 
     protected void Page_Load(object sender, EventArgs e)
     {
 
     }
+
 
     protected void playButton_Click(object sender, EventArgs e)
     {
@@ -23,18 +28,6 @@ public partial class _Default : System.Web.UI.Page
         {
             BeginRound();
         }
-
-        //resultLabel.Text += "<h2>Player One's Cards: </h2> <br />";
-        //foreach(var card in playerOne.PlayerHand)
-        //{
-        //    resultLabel.Text += String.Format("<p>{0} of {1}</p>", card.CardNumber, card.Suit);
-        //}
-
-        //resultLabel.Text += "<h2>Player Two's Cards: </h2> <br />";
-        //foreach (var card in playerTwo.PlayerHand)
-        //{
-        //    resultLabel.Text += String.Format("<p>{0} of {1}</p>", card.CardNumber, card.Suit);
-        //}
     }
 
     private void dealCards()
@@ -46,12 +39,9 @@ public partial class _Default : System.Web.UI.Page
     private Player BeginRound()
     {
         // Each player draws top card from hand
-        var playerOneCard = playerOne.PlayerHand.Dequeue();
-        var playerTwoCard = playerTwo.PlayerHand.Dequeue();
-        cardsOnTable.Add(playerOneCard);
-        cardsOnTable.Add(playerTwoCard);
+        PlayersDrawTopCard();
 
-        DisplayRound(new Card[] { playerOneCard, playerTwoCard });
+        DisplayRound();
         // Evaluate winner
         if (playerOneCard.CardNumber > playerTwoCard.CardNumber)
         {
@@ -73,7 +63,8 @@ public partial class _Default : System.Web.UI.Page
 
     private void PlayersDrawTopCard ()
     {
-
+        playerOneCard = playerOne.PlayerHand.Dequeue();
+        playerTwoCard = playerTwo.PlayerHand.Dequeue();
     }
 
     private void war()
@@ -84,9 +75,9 @@ public partial class _Default : System.Web.UI.Page
         for (int i = 0; i < 3; i++)
         {
             playerOneCards[i] = playerOne.PlayerHand.Dequeue();
-            cardsOnTable.Add(playerOneCards[i]);
+            cardsOnTable.Push(playerOneCards[i]);
             playerTwoCards[i] = playerOne.PlayerHand.Dequeue();
-            cardsOnTable.Add(playerOneCards[i]);
+            cardsOnTable.Push(playerOneCards[i]);
         }
 
         DisplayWar(playerOneCards, playerTwoCards);
@@ -98,11 +89,11 @@ public partial class _Default : System.Web.UI.Page
         cardsOnTable.Clear();
     }
 
-    private void DisplayRound(Card[] cards)
+    private void DisplayRound()
     {
         resultLabel.Text += String.Format("Player One draws a {0}, Player Two Draws a {1}. <br />",
-            cards[0].CardNumber.ToString() + " of " + cards[0].Suit,
-            cards[1].CardNumber.ToString() + " of " + cards[1].Suit);
+            playerOneCard.CardNumber.ToString() + " of " + playerOneCard.Suit,
+            playerTwoCard.CardNumber.ToString() + " of " + playerTwoCard.Suit);
     }
 
     private void DisplayWinner(Player winningPlayer)

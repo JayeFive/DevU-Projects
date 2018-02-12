@@ -12,6 +12,4 @@ namespace GameOfWar
             PlayerHand = new Queue<Card>();
         }
     }
-
-
 }
