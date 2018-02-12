@@ -28,6 +28,8 @@ public partial class _Default : System.Web.UI.Page
         {
             BeginRound();
         }
+
+        DisplayGameWinner(DetermineWinner());
     }
 
     private void dealCards()
@@ -78,6 +80,7 @@ public partial class _Default : System.Web.UI.Page
     {
         var playerOneCards = new Card[3];
         var playerTwoCards = new Card[3];
+        var winningPlayer = new Player();
 
         for (int i = 0; i < 3; i++)
         {
@@ -86,14 +89,19 @@ public partial class _Default : System.Web.UI.Page
             playerTwoCards[i] = playerOne.PlayerHand.Dequeue();
             cardsOnTable.Push(playerOneCards[i]);
         }
-
-        DisplayWar(playerOneCards, playerTwoCards);
     }
 
     private void awardCards(Player winningPlayer)
     {
         foreach (var card in cardsOnTable) winningPlayer.PlayerHand.Enqueue(card);
         cardsOnTable.Clear();
+    }
+
+    private Player DetermineWinner()
+    {
+        if (playerOne.PlayerHand.Count > playerTwo.PlayerHand.Count) return playerOne;
+        else if (playerOne.PlayerHand.Count < playerTwo.PlayerHand.Count) return playerTwo;
+        else return null;
     }
 
     private void DisplayRound()
@@ -117,5 +125,19 @@ public partial class _Default : System.Web.UI.Page
         foreach (var card in playerOneCards) resultLabel.Text += String.Format("{0} of {1}<br />", card.CardNumber, card.Suit);
         resultLabel.Text += "Player Two cards: <br />";
         foreach (var card in playerTwoCards) resultLabel.Text += String.Format("{0} of {1}<br />", card.CardNumber, card.Suit);
+    }
+
+    private void DisplayGameWinner(Player winningPlayer)
+    {
+        if (winningPlayer == null) DisplayGameTie();
+        else
+        {
+            resultLabel.Text += String.Format("{0} wins with {1} cards!", winningPlayer.Name, winningPlayer.PlayerHand.Count); 
+        }
+    }
+
+    private void DisplayGameTie()
+    {
+        resultLabel.Text += "The game is a tie!";
     }
 }
