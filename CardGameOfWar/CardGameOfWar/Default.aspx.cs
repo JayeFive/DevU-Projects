@@ -89,6 +89,8 @@ public partial class _Default : System.Web.UI.Page
             playerTwoCards[i] = playerOne.PlayerHand.Dequeue();
             cardsOnTable.Push(playerOneCards[i]);
         }
+
+        DisplayWar(playerOneCards, playerTwoCards);
     }
 
     private void awardCards(Player winningPlayer)
