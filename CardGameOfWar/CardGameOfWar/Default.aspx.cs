@@ -104,11 +104,23 @@ public partial class _Default : System.Web.UI.Page
         else return null;
     }
 
+    private string ConvertToRoyalNames(Card card)
+    {
+        switch (card.CardNumber)
+        {
+            case 11: return "Jack";
+            case 12: return "Queen";
+            case 13: return "King";
+            case 14: return "Ace";
+            default: return card.CardNumber.ToString();
+        }
+    }
+
     private void DisplayRound()
     {
         resultLabel.Text += String.Format("Player One draws a {0}, Player Two Draws a {1}. <br />",
-            playerOneCard.CardNumber.ToString() + " of " + playerOneCard.Suit,
-            playerTwoCard.CardNumber.ToString() + " of " + playerTwoCard.Suit);
+            ConvertToRoyalNames(playerOneCard) + " of " + playerOneCard.Suit,
+            ConvertToRoyalNames(playerTwoCard) + " of " + playerTwoCard.Suit);
     }
 
     private void DisplayWinner(Player winningPlayer)
