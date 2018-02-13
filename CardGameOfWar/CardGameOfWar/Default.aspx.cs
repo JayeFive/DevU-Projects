@@ -116,7 +116,7 @@ public partial class _Default : System.Web.UI.Page
 
     private void DisplayRound()
     {
-        resultLabel.Text += String.Format("Player One draws a {0}, Player Two Draws a {1}. <br />",
+        resultLabel.Text += String.Format("<br />Player One draws a {0}, Player Two Draws a {1}. <br />",
             ConvertToRoyalNames(playerOneCard) + " of " + playerOneCard.Suit,
             ConvertToRoyalNames(playerTwoCard) + " of " + playerTwoCard.Suit);
     }
@@ -142,12 +142,12 @@ public partial class _Default : System.Web.UI.Page
         if (winningPlayer == null) DisplayGameTie();
         else
         {
-            resultLabel.Text += String.Format("{0} wins with {1} cards!", winningPlayer.Name, winningPlayer.PlayerHand.Count); 
+            resultLabel.Text += String.Format("<h3>{0} wins with {1} cards!</h3>", winningPlayer.Name, winningPlayer.PlayerHand.Count); 
         }
     }
 
     private void DisplayGameTie()
     {
-        resultLabel.Text += "The game is a tie!";
+        resultLabel.Text += "<h3>The game is a tie!</h3>";
     }
 }
