@@ -40,21 +40,17 @@ public partial class _Default : System.Web.UI.Page
 
     private Player BeginRound()
     {
-        // Each player draws top card from hand
         PlayersDrawTopCard();
         AddCardsToPot();
-
         DisplayRound();
-        // Evaluate winner
+
         if (playerOneCard.CardNumber > playerTwoCard.CardNumber)
         {
             awardCards(playerOne);
             DisplayWinner(playerOne);
             return playerOne;
         }
-            // if tied, WAR
         else if (playerOneCard.CardNumber == playerTwoCard.CardNumber) war();
-            // else, winning card holder gets both cards which goto the bottom of the hand
         else 
         {
             awardCards(playerTwo);
