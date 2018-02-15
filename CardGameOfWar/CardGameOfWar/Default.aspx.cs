@@ -12,11 +12,6 @@ public partial class _Default : System.Web.UI.Page
         new Player() { Name = "Player Two" }
     };
     Stack<Card> cardsOnTable = new Stack<Card>();
-
-    Card playerOneCard = new Card();
-    Card playerTwoCard = new Card();
-
-
     const int numberOfRoundsToPlay = 10;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -27,65 +22,68 @@ public partial class _Default : System.Web.UI.Page
 
     protected void playButton_Click(object sender, EventArgs e)
     {
-        dealCards();
-        for (int i = 0; i < numberOfRoundsToPlay; i++) 
-        {
-            BeginRound();
-        }
+        StartGameSequence();
+    }
 
+    private void StartGameSequence()
+    {
+        ShuffleAndDealCards();
+        PlayGame();
         DisplayGameWinner(DetermineWinner());
     }
 
-    private void dealCards()
+    private void ShuffleAndDealCards()
     {
         dealer.ShuffleCards(deck);
         dealer.DealEntireDeck(players, deck);
+    }
+
+    private void PlayGame()
+    {
+        for (int i = 0; i < numberOfRoundsToPlay; i++) BeginRound();
     }
 
     private Player BeginRound()
     {
         PlayersDrawTopCard();
         DisplayRound();
+        
+        return null;
+    }
+
+    private void PlayersDrawTopCard()
+    {
+        foreach (var player in players) cardsOnTable.Push(player.Hand.Dequeue());
+    }
+
+    private void CompareTopCards()
+    {
+        Card playerOneCard = cardsOnTable.Pop();
+        Card playerTwoCard = cardsOnTable.Pop();
 
         if (playerOneCard.CardNumber > playerTwoCard.CardNumber)
         {
             awardCards(players[0]);
             DisplayWinner(players[0]);
-            return players[0];
         }
         else if (playerOneCard.CardNumber == playerTwoCard.CardNumber) war();
-        else 
+        else
         {
             awardCards(players[1]);
             DisplayWinner(players[1]);
-            return players[1];
         }
-        return null;
-    }
-
-    private void PlayersDrawTopCard ()
-    {
-        foreach (var player in players) cardsOnTable.Push(player.Hand.Dequeue());
-
-        //playerOneCard = players[0].PlayerHand.Dequeue();
-        //playerTwoCard = players[1].PlayerHand.Dequeue();
     }
 
     private void war()
     {
-        var playerOneCards = new Card[3];
-        var playerTwoCards = new Card[3];
-        var winningPlayer = new Player();
-
-        for (int i = 0; i < 3; i++)
+        DisplayWarHeading();
+        foreach (var player in players)
         {
-            playerOneCards[i] = playerOne.PlayerHand.Dequeue();
-            cardsOnTable.Push(playerOneCards[i]);
-            playerTwoCards[i] = playerOne.PlayerHand.Dequeue();
-            cardsOnTable.Push(playerOneCards[i]);
+            for (int i = 0; i < 3; i++)
+            {
+                cardsOnTable.Push(player.Hand.Dequeue());
+            }
         }
-
-        DisplayWar(playerOneCards, playerTwoCards);
     }
 
     private void awardCards(Player winningPlayer)
@@ -115,12 +113,13 @@ public partial class _Default : System.Web.UI.Page
 
     private void DisplayRound()
     {
-
-        
-
-        resultLabel.Text += String.Format("<br />Player One draws a {0}, Player Two Draws a {1}. <br />",
-            ConvertToRoyalNames(playerOneCard.Suit) + " of " + playerOneCard.Suit,
-            ConvertToRoyalNames(playerTwoCard) + " of " + playerTwoCard.Suit);
+        foreach(var player in players)
+        {
+            resultLabel.Text += String.Format("{0} draws a(n) {1} of {2}<br />",
+                player.Name,
+                ConvertToRoyalNames(player.Hand.Peek()),
+                player.Hand.Peek(), player.Hand.Peek().Suit);
+        }
     }
 
     private void DisplayWinner(Player winningPlayer)
@@ -130,13 +129,14 @@ public partial class _Default : System.Web.UI.Page
         resultLabel.Text += String.Format("{0} has {1} cards. <br />", playerTwo.Name, playerTwo.PlayerHand.Count);
     }
 
-    private void DisplayWar(Card[] playerOneCards, Card[] playerTwoCards)
+    private void DisplayWarHeading()
     {
         resultLabel.Text += "<h3>WAR!!</h3> <br />";
-        resultLabel.Text += "Player One cards: <br />";
-        foreach (var card in playerOneCards) resultLabel.Text += String.Format("{0} of {1}<br />", card.CardNumber, card.Suit);
-        resultLabel.Text += "Player Two cards: <br />";
-        foreach (var card in playerTwoCards) resultLabel.Text += String.Format("{0} of {1}<br />", card.CardNumber, card.Suit);
+    }
+
+    private void DisplayWarCard(Player player)
+    {
+        resultLabel.Text += ConvertToRoyalNames(player.Hand.Peek().CardNumber);
     }
 
     private void DisplayGameWinner(Player winningPlayer)

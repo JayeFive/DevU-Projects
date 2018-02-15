@@ -6,7 +6,6 @@ namespace GameOfWar
     {
         public string Name { get; set; }
         public Queue<Card> Hand { get; set; }
-        public Card TopCard { get; set; }
 
         public Player()
         {
