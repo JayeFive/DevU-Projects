@@ -84,15 +84,20 @@ public partial class _Default : System.Web.UI.Page
         foreach (var player in players)
         {
             DisplayPlayerWarHeading(player);
-            for (int i = 0; i < 3; i++)
-            {
-                cardsOnTable.Push(player.Hand.Dequeue());
-                DisplayWarCard();
-            }
-            AddFormattingBreak();
+            DrawWarCards(player);
         }
 
         BeginRound();
+    }
+
+    private void DrawWarCards(Player player)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            cardsOnTable.Push(player.Hand.Dequeue());
+            DisplayWarCard();
+        }
+        AddFormattingBreak();
     }
 
     private void awardCards(Player winningPlayer)
