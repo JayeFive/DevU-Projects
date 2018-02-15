@@ -12,7 +12,7 @@ public partial class _Default : System.Web.UI.Page
         new Player() { Name = "Player Two" }
     };
     Stack<Card> cardsOnTable = new Stack<Card>();
-    const int numberOfRoundsToPlay = 10;
+    const int numberOfRoundsToPlay = 500;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -41,32 +41,34 @@ public partial class _Default : System.Web.UI.Page
     {
         for (int i = 0; i < numberOfRoundsToPlay; i++)
         {
-            if(players[0].Hand.Count < 52 && players[1].Hand.Count < 52) BeginRound();
+            if(players[0].Hand.Count > 0 && players[1].Hand.Count > 0) BeginRound();
             else return;
         }
     }
 
     private void BeginRound()
     {
-        PlayersDrawTopCard();
+        DrawBattleCards();
+        DisplayBattleCards();
+        AddBattleCardsToPot();
         CheckForWinOrWar();
     }
 
-    private void PlayersDrawTopCard()
+    private void DrawBattleCards()
     {
-        SetBattleCards();
-        DisplayBattleCards();
-        AddBattleCardsToPot();
-    }
-
-    private void SetBattleCards()
-    {
-        foreach (var player in players) player.BattleCard = player.Hand.Dequeue();
+        try
+        {
+            foreach (var player in players) player.BattleCard = player.Hand.Dequeue();
+        }
+        catch (Exception)
+        {
+            return;
+        }
     }
 
     private void AddBattleCardsToPot()
     {
-        foreach (var player in players) cardsOnTable.Push(player.BattleCard);
+        foreach (var player in players) if(!cardsOnTable.Contains(player.BattleCard)) cardsOnTable.Push(player.BattleCard);
     }
 
     private void CheckForWinOrWar()
@@ -103,8 +105,16 @@ public partial class _Default : System.Web.UI.Page
     {
         for (int i = 0; i < 3; i++)
         {
-            cardsOnTable.Push(player.Hand.Dequeue());
-            DisplayWarCard();
+            try
+            {
+                cardsOnTable.Push(player.Hand.Dequeue());
+                DisplayWarCard();
+            }
+            catch (InvalidOperationException)
+            {
+                if (i > 0) FinalCardInWarException(player);
+                return;
+            }
         }
 
         AddFormattingBreak();
@@ -121,6 +131,11 @@ public partial class _Default : System.Web.UI.Page
         if (players[0].Hand.Count > players[1].Hand.Count) return players[0];
         else if (players[0].Hand.Count < players[1].Hand.Count) return players[1];
         else return null;
+    }
+
+    private void FinalCardInWarException(Player player)
+    {
+        player.BattleCard = cardsOnTable.Peek();
     }
 
     /* Display methods */
