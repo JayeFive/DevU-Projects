@@ -39,7 +39,11 @@ public partial class _Default : System.Web.UI.Page
 
     private void PlayGame()
     {
-        for (int i = 0; i < numberOfRoundsToPlay; i++) BeginRound();
+        for (int i = 0; i < numberOfRoundsToPlay; i++)
+        {
+            if(players[0].Hand.Count < 52 && players[1].Hand.Count < 52) BeginRound();
+            else return;
+        }
     }
 
     private void BeginRound()
