@@ -66,8 +66,8 @@ public partial class _Default : System.Web.UI.Page
         if (winningPlayer == null) war();
         else
         {
-            DisplayRoundResults(winningPlayer);
             awardCards(winningPlayer);
+            DisplayRoundResults(winningPlayer);
         }
     }
 
@@ -89,6 +89,7 @@ public partial class _Default : System.Web.UI.Page
                 cardsOnTable.Push(player.Hand.Dequeue());
                 DisplayWarCard();
             }
+            AddFormattingBreak();
         }
 
         BeginRound();
@@ -135,6 +136,7 @@ public partial class _Default : System.Web.UI.Page
     {
         DisplayWinner(winningPlayer);
         DisplayPlayerCardCount();
+        AddFormattingBreak();
     }
 
     private void DisplayWinner(Player winningPlayer)
@@ -174,5 +176,10 @@ public partial class _Default : System.Web.UI.Page
     private void DisplayGameTie()
     {
         resultLabel.Text += "<h3>The game is a tie!</h3>";
+    }
+
+    private void AddFormattingBreak()
+    {
+        resultLabel.Text += "<br />";
     }
 }
