@@ -12,7 +12,7 @@ public partial class _Default : System.Web.UI.Page
         new Player() { Name = "Player Two" }
     };
     Stack<Card> cardsOnTable = new Stack<Card>();
-    const int numberOfRoundsToPlay = 500;
+    const int numberOfRoundsToPlay = 800;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -56,13 +56,16 @@ public partial class _Default : System.Web.UI.Page
 
     private void DrawBattleCards()
     {
-        try
+        foreach (var player in players)
         {
-            foreach (var player in players) player.BattleCard = player.Hand.Dequeue();
-        }
-        catch (Exception)
-        {
-            return;
+            try
+            {
+                player.BattleCard = player.Hand.Dequeue();
+            }
+            catch (Exception)
+            {
+               continue;
+            }
         }
     }
 
@@ -105,19 +108,25 @@ public partial class _Default : System.Web.UI.Page
     {
         for (int i = 0; i < 3; i++)
         {
-            try
-            {
-                cardsOnTable.Push(player.Hand.Dequeue());
-                DisplayWarCard();
-            }
-            catch (InvalidOperationException)
-            {
-                if (i > 0) FinalCardInWarException(player);
-                return;
-            }
+            WinConditionExceptionHandler(player, i);
         }
 
+        if (player.Hand.Count == 0) FinalCardInWarException(player);
         AddFormattingBreak();
+    }
+
+    private void WinConditionExceptionHandler(Player player, int i)
+    {
+        try
+        {
+            cardsOnTable.Push(player.Hand.Dequeue());
+            DisplayWarCard();
+        }
+        catch (InvalidOperationException)
+        {
+            if (i > 0) FinalCardInWarException(player);
+            return;
+        }
     }
 
     private void awardCards(Player winningPlayer)
