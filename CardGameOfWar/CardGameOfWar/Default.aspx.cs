@@ -8,7 +8,7 @@ public partial class _Default : System.Web.UI.Page
     Dealer dealer = new Dealer();
     List<Player> players = new List<Player>()
     {
-        new Player() { Name = "Player One"},
+        new Player() { Name = "Player One" },
         new Player() { Name = "Player Two" }
     };
     Stack<Card> cardsOnTable = new Stack<Card>();
