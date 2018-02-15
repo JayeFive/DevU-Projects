@@ -44,10 +44,15 @@ public partial class _Default : System.Web.UI.Page
 
     private void BeginRound()
     {
+        PlayersDrawTopCard();
+        CheckForWinOrWar();
+    }
+
+    private void PlayersDrawTopCard()
+    {
         SetBattleCards();
         DisplayBattleCards();
         AddBattleCardsToPot();
-        CheckForWinOrWar();
     }
 
     private void SetBattleCards()
@@ -97,6 +102,7 @@ public partial class _Default : System.Web.UI.Page
             cardsOnTable.Push(player.Hand.Dequeue());
             DisplayWarCard();
         }
+
         AddFormattingBreak();
     }
 
