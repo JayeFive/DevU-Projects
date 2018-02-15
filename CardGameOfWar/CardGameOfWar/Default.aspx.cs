@@ -113,6 +113,7 @@ public partial class _Default : System.Web.UI.Page
         else return null;
     }
 
+    /* Display methods */
     private string ConvertToRoyalNames(int cardNumber)
     {
         switch (cardNumber)
