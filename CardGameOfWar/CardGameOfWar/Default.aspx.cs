@@ -6,13 +6,17 @@ public partial class _Default : System.Web.UI.Page
 {
     DeckOfCards deck = new DeckOfCards();
     Dealer dealer = new Dealer();
-    Player playerOne = new Player() { Name = "Player One" };
-    Player playerTwo = new Player() { Name = "Player Two" };
+    List<Player> players = new List<Player>()
+    {
+        new Player() { Name = "Player One"}, 
+        new Player() { Name = "Player Two" }
+    };
+    Stack<Card> cardsOnTable = new Stack<Card>();
+
     Card playerOneCard = new Card();
     Card playerTwoCard = new Card();
 
 
-    Stack<Card> cardsOnTable = new Stack<Card>();
     const int numberOfRoundsToPlay = 10;
 
     protected void Page_Load(object sender, EventArgs e)
@@ -35,41 +39,36 @@ public partial class _Default : System.Web.UI.Page
     private void dealCards()
     {
         dealer.ShuffleCards(deck);
-        dealer.DealEntireDeck(new Player[] { playerOne, playerTwo }, deck);
+        dealer.DealEntireDeck(players, deck);
     }
 
     private Player BeginRound()
     {
         PlayersDrawTopCard();
-        AddCardsToPot();
         DisplayRound();
 
         if (playerOneCard.CardNumber > playerTwoCard.CardNumber)
         {
-            awardCards(playerOne);
-            DisplayWinner(playerOne);
-            return playerOne;
+            awardCards(players[0]);
+            DisplayWinner(players[0]);
+            return players[0];
         }
         else if (playerOneCard.CardNumber == playerTwoCard.CardNumber) war();
         else 
         {
-            awardCards(playerTwo);
-            DisplayWinner(playerTwo);
-            return playerTwo;
+            awardCards(players[1]);
+            DisplayWinner(players[1]);
+            return players[1];
         }
         return null;
     }
 
     private void PlayersDrawTopCard ()
     {
-        playerOneCard = playerOne.PlayerHand.Dequeue();
-        playerTwoCard = playerTwo.PlayerHand.Dequeue();
-    }
+        foreach (var player in players) cardsOnTable.Push(player.Hand.Dequeue());
 
-    private void AddCardsToPot()
-    {
-        cardsOnTable.Push(playerOneCard);
-        cardsOnTable.Push(playerTwoCard);
+        //playerOneCard = players[0].PlayerHand.Dequeue();
+        //playerTwoCard = players[1].PlayerHand.Dequeue();
     }
 
     private void war()
@@ -91,7 +90,7 @@ public partial class _Default : System.Web.UI.Page
 
     private void awardCards(Player winningPlayer)
     {
-        foreach (var card in cardsOnTable) winningPlayer.PlayerHand.Enqueue(card);
+        foreach (var card in cardsOnTable) winningPlayer.Hand.Enqueue(card);
         cardsOnTable.Clear();
     }
 
@@ -116,8 +115,11 @@ public partial class _Default : System.Web.UI.Page
 
     private void DisplayRound()
     {
+
+        
+
         resultLabel.Text += String.Format("<br />Player One draws a {0}, Player Two Draws a {1}. <br />",
-            ConvertToRoyalNames(playerOneCard) + " of " + playerOneCard.Suit,
+            ConvertToRoyalNames(playerOneCard.Suit) + " of " + playerOneCard.Suit,
             ConvertToRoyalNames(playerTwoCard) + " of " + playerTwoCard.Suit);
     }
 
@@ -142,7 +144,7 @@ public partial class _Default : System.Web.UI.Page
         if (winningPlayer == null) DisplayGameTie();
         else
         {
-            resultLabel.Text += String.Format("<h3>{0} wins with {1} cards!</h3>", winningPlayer.Name, winningPlayer.PlayerHand.Count); 
+            resultLabel.Text += String.Format("<h3>{0} wins with {1} cards!</h3>", winningPlayer.Name, winningPlayer.Hand.Count); 
         }
     }
 

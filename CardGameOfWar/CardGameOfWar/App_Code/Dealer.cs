@@ -20,13 +20,13 @@ namespace GameOfWar
             }
         }
 
-        public void DealEntireDeck(Player[] players, DeckOfCards deck)
+        public void DealEntireDeck(List<Player> players, DeckOfCards deck)
         {
             while (deck.StandardDeck.Count > 0)
             {
                 foreach(var player in players)
                 {
-                    player.PlayerHand.Enqueue(deck.StandardDeck[0]);
+                    player.Hand.Enqueue(deck.StandardDeck[0]);
                     deck.StandardDeck.Remove(deck.StandardDeck[0]);
                 }
             }
