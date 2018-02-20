@@ -22,6 +22,15 @@ namespace GridViewButtonCommand {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
+        /// carsGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView carsGridView;
+        
+        /// <summary>
         /// resultLabel control.
         /// </summary>
         /// <remarks>

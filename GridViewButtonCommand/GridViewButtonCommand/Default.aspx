@@ -13,7 +13,15 @@
         <h1>GridView Button Command</h1>
         <br />
         <br />
-
+        <asp:GridView ID="carsGridView" runat="server" AutoGenerateColumns="False" OnRowCommand="carsGridView_RowCommand">
+            <Columns>
+                <asp:ButtonField Text="View" />
+                <asp:BoundField DataField="Make" HeaderText="Make" />
+                <asp:BoundField DataField="Model" HeaderText="Model" />
+                <asp:BoundField DataField="Year" HeaderText="Year" />
+                <asp:BoundField DataField="CarId" HeaderText="Car ID" />
+            </Columns>
+        </asp:GridView>
         <br />
         <asp:Label ID="resultLabel" runat="server"></asp:Label>
         <br />
